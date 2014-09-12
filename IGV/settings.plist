@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Defaults</key>
+	<dict>
+		<key>fileList</key>
+		<array>
+			<dict>
+				<key>https://dl.dropbox.com/u/11270323/BroadInstitute/WIG/wiggleFixedStepRandom.wig</key>
+				<string>WIG Random Data Test</string>
+			</dict>
+			<dict>
+				<key>http://dl.dropbox.com/u/11270323/BroadInstitute/NuthinHere/chr14_hg18_genes.bed</key>
+				<string>Non-existent File Test</string>
+			</dict>
+			<dict>
+				<key>http://www.broadinstitute.org/igvdata/ipad/hg18_refseq_genes.ooo</key>
+				<string>Bogus Suffix Test</string>
+			</dict>
+			<dict>
+				<key>http://www.broadinstitute.org/igvdata/test/wig/wiggleFixedStepExample.wig</key>
+				<string>WIG Test</string>
+			</dict>
+			<dict>
+				<key>http://www.broadinstitute.org/igvdata/encode/hg18/broadHistone/SignalGm12878Ctcf.tdf</key>
+				<string>TDF Development</string>
+			</dict>
+			<dict>
+				<key>https://dm.genomespace.org/datamanager/file/Home/igvtest/ipad/hg18_refseq_genes.bed</key>
+				<string>Authentication bug</string>
+			</dict>
+			<dict>
+				<key>http://www.broadinstitute.org/igvdata/ipad/genomes/hg18/hg18_refseq_genes.bed</key>
+				<string>hg18 genes</string>
+			</dict>
+			<dict>
+				<key>http://www.broadinstitute.org/igvdata/1KG/pilot2Bams/NA12891.SLX.bam</key>
+				<string>NA12891 SLX (CEU father)</string>
+			</dict>
+		</array>
+		<key>locusAtAppLaunch</key>
+		<dict>
+			<key>14:64624904-64625672</key>
+			<string>Launch Locus</string>
+		</dict>
+		<key>locusList</key>
+		<array>
+			<dict>
+				<key>chr19:59307401-61307901</key>
+				<string>WIG Random Data Test</string>
+			</dict>
+			<dict>
+				<key>chr19:59307401-59310301</key>
+				<string>WIG Test</string>
+			</dict>
+			<dict>
+				<key>16:7,309,261-81,511,741</key>
+				<string>TDF Development</string>
+			</dict>
+			<dict>
+				<key>12:97,509,534-97,521,909</key>
+				<string>SLC25A3</string>
+			</dict>
+		</array>
+	</dict>
+</dict>
+</plist>

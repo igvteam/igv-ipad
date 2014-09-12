@@ -1,0 +1,25 @@
+# osx noise
+.DS_Store
+profile
+
+# appcode noise
+.idea/
+
+# xcode noise
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+
+# automated build noise
+/build/
+/dist/
+/distribution_server/public/apps/
+/distribution_server/public/
+/cache/
+/distribution_server/server.pid
+/distribution_server/server.log
+/pkg/
+/build.output
+/.idea/workspace.xml
+/tmp/
+/ruby/tmp/
+

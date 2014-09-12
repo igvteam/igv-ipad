@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
+    <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RootContentController">
+            <connections>
+                <outlet property="cytobandTrack" destination="29" id="65"/>
+                <outlet property="refSeqTrack" destination="21" id="64"/>
+                <outlet property="rootScrollView" destination="4" id="9"/>
+                <outlet property="rulerView" destination="2vH-iv-eGH" id="A5F-Re-Te0"/>
+                <outlet property="screenShot" destination="81" id="82"/>
+                <outlet property="spinnerContainer" destination="56" id="59"/>
+                <outlet property="trackContainerScrollView" destination="12" id="20"/>
+                <outlet property="view" destination="27" id="28"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view tag="22" contentMode="scaleToFill" id="27" userLabel="Root Container (root view)">
+            <rect key="frame" x="0.0" y="44" width="768" height="980"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" id="81" userLabel="ScreenShot">
+                    <rect key="frame" x="0.0" y="0.0" width="768" height="980"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" tag="44" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" id="4" userLabel="Root Scrollview" customClass="RootScrollView">
+                    <rect key="frame" x="0.0" y="24" width="768" height="956"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <subviews>
+                        <view tag="88" contentMode="scaleToFill" id="16" userLabel="Root Content Container" customClass="SelectiveScaleAxisView">
+                            <rect key="frame" x="0.0" y="0.0" width="768" height="956"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" id="2vH-iv-eGH" userLabel="Ruler" customClass="RulerView">
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="36"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </view>
+                                <view tag="3232" contentMode="scaleToFill" id="21" userLabel="RefSeq Track" customClass="RefSeqTrackView">
+                                    <rect key="frame" x="0.0" y="36" width="768" height="24"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1616" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" id="12" userLabel="Track Container ScrollView" customClass="TrackContainerScrollView">
+                                    <rect key="frame" x="0.0" y="60" width="768" height="896"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </scrollView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="contentContainer" destination="16" id="17"/>
+                        <outlet property="delegate" destination="-1" id="36"/>
+                    </connections>
+                </scrollView>
+                <view contentMode="redraw" id="29" userLabel="Cytoband Track" customClass="CytobandTrackView">
+                    <rect key="frame" x="0.0" y="0.0" width="768" height="24"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <view hidden="YES" contentMode="redraw" id="31" userLabel="Cytoband Indicator" customClass="CytobandIndicator">
+                            <rect key="frame" x="382" y="0.0" width="4" height="24"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="indicator" destination="31" id="53"/>
+                    </connections>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" id="56" userLabel="Spinner Container" customClass="SpinnerContainer">
+                    <rect key="frame" x="309" y="415" width="150" height="150"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" id="57" userLabel="Spinner">
+                            <rect key="frame" x="56" y="57" width="37" height="37"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="spinner" destination="57" id="58"/>
+                    </connections>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+        </view>
+    </objects>
+</document>

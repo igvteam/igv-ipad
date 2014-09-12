@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Defaults</key>
+	<dict>
+		<key>fileList</key>
+		<array>
+			<dict>
+				<key>https://dl.dropbox.com/u/11270323/BroadInstitute/WIG/wiggleFixedStepRandom.wig</key>
+				<string>WIG Random Data Test</string>
+			</dict>
+			<dict>
+				<key>http://www.broadinstitute.org/igvdata/ipad/genomes/hg18/hg18_refseq_genes.bed</key>
+				<string>hg18 genes</string>
+			</dict>
+			<dict>
+				<key>http://www.broadinstitute.org/igvdata/1KG/pilot2Bams/NA12891.SLX.bam</key>
+				<string>NA12891 SLX (CEU father)</string>
+			</dict>
+		</array>
+		<key>locusAtAppLaunch</key>
+		<dict>
+			<key>hg18#14:64624904-64625672</key>
+			<string>Launch Locus</string>
+		</dict>
+		<key>locusList</key>
+		<array>
+			<dict>
+				<key>hg18#chr19:59307401-61307901</key>
+				<string>WIG Random Data Test</string>
+			</dict>
+		</array>
+	</dict>
+</dict>
+</plist>
