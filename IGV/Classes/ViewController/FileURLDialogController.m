@@ -43,6 +43,13 @@
 #import "IGVHelpful.h"
 
 @interface FileURLDialogController ()
+
+@property(nonatomic, retain) IBOutlet UITextField *labelTextField;
+@property(nonatomic, retain) IBOutlet UITextField *fileURLDialogTextField;
+
+- (IBAction)cancelWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
+- (IBAction)saveWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
+
 - (void)addFileListItemWithFileURLTextField:(UITextField *)fileURLTextField labelTextField:(UITextField *)labelTextField;
 @end
 

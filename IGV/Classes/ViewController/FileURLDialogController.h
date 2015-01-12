@@ -38,20 +38,10 @@
 #import <UIKit/UIKit.h>
 
 @protocol FileURLDialogDelegate;
-
-@class MyTracksController;
 @class FileListItem;
 
 @interface FileURLDialogController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate>
-
-@property(nonatomic, retain) IBOutlet UITextField *labelTextField;
-@property(nonatomic, retain) IBOutlet UITextField *fileURLDialogTextField;
-
 @property(nonatomic, assign) id <FileURLDialogDelegate> delegate;
-
-- (IBAction)cancelWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
-- (IBAction)saveWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
-
 @end
 
 @protocol FileURLDialogDelegate <NSObject>
