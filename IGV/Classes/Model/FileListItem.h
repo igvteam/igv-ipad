@@ -38,7 +38,7 @@
 
 @interface FileListItem : NSObject
 
-- (id)initWithPath:(NSString *)path label:(NSString *)label genome:(NSString *)genome;
+- (id)initWithFileURLPath:(NSString *)fileURLPath label:(NSString *)label genome:(NSString *)genome;
 @property(nonatomic, retain) NSString *path;
 @property(nonatomic, retain) NSString *label;
 @property(nonatomic, assign) BOOL enabled;
@@ -49,7 +49,7 @@
 + (NSString *)urlStringWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
 + (NSString *)genomeWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
 
-+ (NSString *)defaultLabelWithPath:(NSString *)path;
++ (NSString *)defaultLabelWithFileURLPath:(NSString *)fileURLPath;
 
 - (NSDictionary *)fileListDefaultsItem;
 @end

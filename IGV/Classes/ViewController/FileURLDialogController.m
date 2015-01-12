@@ -46,17 +46,19 @@
 
 @property(nonatomic, retain) IBOutlet UITextField *labelTextField;
 @property(nonatomic, retain) IBOutlet UITextField *fileURLDialogTextField;
+@property(nonatomic, retain) IBOutlet UITextField *bedIndexFileURLDialogTextField;
 
 - (IBAction)cancelWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
 - (IBAction)saveWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
 
-- (void)addFileListItemWithFileURLTextField:(UITextField *)fileURLTextField labelTextField:(UITextField *)labelTextField;
+- (void)addFileListItemWithFileURLTextField:(UITextField *)fileURLTextField labelTextField:(UITextField *)labelTextField bedIndexFileURLTextField:(UITextField *)bedIndexFileURLTextField;
 @end
 
 @implementation FileURLDialogController
 
 @synthesize labelTextField = _labelTextField;
 @synthesize fileURLDialogTextField = _fileURLDialogTextField;
+@synthesize bedIndexFileURLDialogTextField = _bedIndexFileURLDialogTextField;
 @synthesize delegate;
 
 - (void)dealloc {
@@ -94,32 +96,37 @@
 }
 
 - (void)saveWithBarButtonItem:(UIBarButtonItem *)barButtonItem {
-    [self addFileListItemWithFileURLTextField:self.fileURLDialogTextField labelTextField:self.labelTextField];
+    [self addFileListItemWithFileURLTextField:self.fileURLDialogTextField
+                               labelTextField:self.labelTextField
+                     bedIndexFileURLTextField:nil];
 
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 
-    [self addFileListItemWithFileURLTextField:self.fileURLDialogTextField labelTextField:self.labelTextField];
+    [self addFileListItemWithFileURLTextField:self.fileURLDialogTextField
+                               labelTextField:self.labelTextField
+                     bedIndexFileURLTextField:nil];
 
     return YES;
 }
 
-- (void)addFileListItemWithFileURLTextField:(UITextField *)fileURLTextField labelTextField:(UITextField *)labelTextField {
+- (void)addFileListItemWithFileURLTextField:(UITextField *)fileURLTextField
+                             labelTextField:(UITextField *)labelTextField
+                   bedIndexFileURLTextField:(UITextField *)bedIndexFileURLTextField {
 
-    BOOL noFileURLString = (nil == fileURLTextField.text || [@"" isEqualToString:fileURLTextField.text]);
+    BOOL fileURLIsAbsent = (nil == fileURLTextField.text || [@"" isEqualToString:fileURLTextField.text]);
+    BOOL bedFileURLIsAbsent = (nil == bedIndexFileURLTextField.text || [@"" isEqualToString:bedIndexFileURLTextField.text]);
 
-    if (noFileURLString) {
-
+    if (fileURLIsAbsent) {
         [self.delegate fileURLDialogController:self addFileListItem:nil];
         return;
     }
 
-
-    NSString *path = [fileURLTextField.text removeHeadTailWhitespace];
+    NSString *fileURLPath = [fileURLTextField.text removeHeadTailWhitespace];
 
     NSString *blurb = nil;
-    if (![IGVHelpful isUsablePath:path blurb:&blurb]) {
+    if (![IGVHelpful isUsablePath:fileURLPath blurb:&blurb]) {
 
         UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Error"
                                                              message:blurb
@@ -132,11 +139,11 @@
         return;
     }
 
-    NSString *label = (nil == labelTextField.text) ? [FileListItem defaultLabelWithPath:path] : labelTextField.text;
+    NSString *label = (nil == labelTextField.text) ? [FileListItem defaultLabelWithFileURLPath:fileURLPath] : labelTextField.text;
 
-    FileListItem *fileListItem = [[[FileListItem alloc] initWithPath:path
-                                                               label:label
-                                                              genome:[GenomeManager sharedGenomeManager].currentGenomeName] autorelease];
+    FileListItem *fileListItem = [[[FileListItem alloc] initWithFileURLPath:fileURLPath
+                                                                      label:label
+                                                                     genome:[GenomeManager sharedGenomeManager].currentGenomeName] autorelease];
 
     [self.labelTextField resignFirstResponder];
     [self.fileURLDialogTextField resignFirstResponder];

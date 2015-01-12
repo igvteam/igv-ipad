@@ -104,7 +104,7 @@
         }
 
         NSMutableArray *fileListItems = [self.urlList objectForKey:genome];
-        [fileListItems addObject:[[[FileListItem alloc] initWithPath:urlString label:label genome:genome] autorelease]];
+        [fileListItems addObject:[[[FileListItem alloc] initWithFileURLPath:urlString label:label genome:genome] autorelease]];
 
     }
 

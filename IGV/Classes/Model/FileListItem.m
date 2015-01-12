@@ -51,22 +51,22 @@
     [super dealloc];
 }
 
-- (id)initWithPath:(NSString *)path label:(NSString *)label genome:(NSString *)genome {
+- (id)initWithFileURLPath:(NSString *)fileURLPath label:(NSString *)label genome:(NSString *)genome {
 
     self = [super init];
 
     if (nil != self) {
 
         self.enabled = NO;
-        self.path = path;
-        self.label = ([label isEqualToString:@""] || nil == label) ? [FileListItem defaultLabelWithPath:path] : label;
+        self.path = fileURLPath;
+        self.label = ([label isEqualToString:@""] || nil == label) ? [FileListItem defaultLabelWithFileURLPath:fileURLPath] : label;
         self.genome = genome;
     }
 
     return self;
 }
 
-+ (NSString *)defaultLabelWithPath:(NSString *)path {
++ (NSString *)defaultLabelWithFileURLPath:(NSString *)fileURLPath {
 
 //    NSArray *parts = [path componentsSeparatedByString:@"/"];
 //    NSString *filename = [parts objectAtIndex:([parts count] - 1)];
