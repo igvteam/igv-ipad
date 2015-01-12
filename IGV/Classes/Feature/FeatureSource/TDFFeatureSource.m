@@ -92,7 +92,7 @@
 
     if (nil != self) {
         self.color = resource.color;
-        self.path = resource.path;
+        self.path = resource.filePath;
         self.featureCache = [[[FeatureCache alloc] initWithZoomOption:YES] autorelease];
     }
 

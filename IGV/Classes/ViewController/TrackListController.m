@@ -167,7 +167,7 @@
         cell.name.text = resource.name;
         cell.path.text   = [resource tableViewCellPath];
 
-        resource.enabled = nil != [rootContentController.trackControllers objectForKey:resource.path];
+        resource.enabled = nil != [rootContentController.trackControllers objectForKey:resource.filePath];
         [cell.enabledSwitch setOn:resource.enabled animated:NO];
         cell.enabledSwitch.hidden = NO;
 

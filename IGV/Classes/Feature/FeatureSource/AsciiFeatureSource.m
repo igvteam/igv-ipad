@@ -62,15 +62,17 @@
 #import "LMResource.h"
 #import "GenomeManager.h"
 
-
 @interface AsciiFeatureSource ()
 @property(nonatomic) long long int gzipped;
+@property(nonatomic) int indexLoadAttempts;
+@property(nonatomic, retain) BWTotalSummary *bwTotalSummary;
+@property(nonatomic, retain) LinearIndex *featureIndex;
 @end
 
 @implementation AsciiFeatureSource
 
 @synthesize codec;
-@synthesize path = _path;
+@synthesize filePath = _filePath;
 @synthesize featureIndex;
 @synthesize trackProperties;
 @synthesize bwTotalSummary = _bwTotalSummary;
@@ -78,7 +80,7 @@
 
 - (void)dealloc {
 
-    self.path = nil;
+    self.filePath = nil;
     self.codec = nil;
     self.featureIndex = nil;
     self.trackProperties = nil;
@@ -87,14 +89,14 @@
     [super dealloc];
 }
 
-- (id)initWithPath:(NSString *)path {
+- (id)initWithFilePath:(NSString *)filePath {
 
     self = [super init];
 
     if (nil != self) {
         self.indexLoadAttempts = 0;
-        self.path = path;
-        self.codec = [[CodecFactory sharedCodecFactory] codecForPath:path];
+        self.filePath = filePath;
+        self.codec = [[CodecFactory sharedCodecFactory] codecForPath:filePath];
         self.bwTotalSummary = [[BWTotalSummary alloc] autorelease];
     }
 
@@ -146,14 +148,18 @@
     }
     else {
 
-        if (_indexLoadAttempts == 0) {
-            // Try to load an index first
-            _indexLoadAttempts++;
-            NSString *indexPath = [NSString stringWithFormat:@"%@.idx", self.path];
-            [self loadIndexWithPath:indexPath continuation:^(LinearIndex *index) {
-                self.featureIndex = index;
+        if (0 == self.indexLoadAttempts) {
 
-                if (nil != index) {
+            // Try to load an index first
+            self.indexLoadAttempts++;
+
+            NSString *indexPath = [NSString stringWithFormat:@"%@.idx", self.filePath];
+
+            [self loadIndexWithPath:indexPath continuation:^(LinearIndex *linearIndex) {
+
+                self.featureIndex = linearIndex;
+
+                if (nil != linearIndex) {
                     // Compute a feature visibility window
                     double bpToByte = [self computeBasePairToByteDensity];
                     if (bpToByte > 0 && bpToByte < 500) {
@@ -166,7 +172,6 @@
                 completion();
             }];
         }
-
         else {
             if (nil == self.featureIndex) {
 
@@ -225,7 +230,7 @@
     [URLDataLoader loadDataWithPath:indexPath completion:^(HttpResponse *response) {
 
         if ([response statusCode] > 400) {
-            continuation(nil);   // TODO -- could mean error, coul
+            continuation(nil);   // TODO -- could mean error
         } else {
             continuation([IndexFactory indexFromData:response.receivedData pathExtension:[indexPath pathExtension]]);
         }
@@ -236,7 +241,7 @@
 // Load all features in the file, cache them for later use, and return the interval requested
 - (void)loadNonIndexedFeaturesForInterval:(FeatureInterval *)interval continuation:(LoadFeaturesCompletion)completion {
 
-    [URLDataLoader loadDataWithPath:self.path completion:^(HttpResponse *response) {
+    [URLDataLoader loadDataWithPath:self.filePath completion:^(HttpResponse *response) {
 
         if ([response statusCode] > 400) {
             completion();               // TODO -- handle this error
@@ -270,7 +275,7 @@
 
     FileRange *fileRange = [[self.featureIndex.chrIndices objectForKey:fileChr] getRangeOverlapping:(int) queryInterval.start end:(int) queryInterval.end];
 
-    [URLDataLoader loadDataWithPath:self.path forRange:fileRange completion:^(HttpResponse *response) {
+    [URLDataLoader loadDataWithPath:self.filePath forRange:fileRange completion:^(HttpResponse *response) {
 
         FeatureList *featureList;
 
@@ -335,7 +340,7 @@
 - (NSMutableArray *)decode:(NSData *)data error:(NSError **)error forQueryInterval:(FeatureInterval *)queryInterval {
 
     NSData *srcData = data;
-    if ([[self.path pathExtension] isEqualToString:@"gz"]) {
+    if ([[self.filePath pathExtension] isEqualToString:@"gz"]) {
         srcData = [data gunzippedData];
     }
 
@@ -412,13 +417,13 @@
     return featureLists;
 }
 
-+ (AsciiFeatureSource *)featureSourceForPath:(NSString *)path {
-    return [[[AsciiFeatureSource alloc] initWithPath:path] autorelease];
-}
+//+ (AsciiFeatureSource *)featureSourceForPath:(NSString *)path {
+//    return [[[AsciiFeatureSource alloc] initWithFilePath:path] autorelease];
+//}
 
 - (NSString *)description {
 
-    return [NSString stringWithFormat:@"%@ %@ path %@.", [self class], [self.codec class], self.path];
+    return [NSString stringWithFormat:@"%@ %@ path %@.", [self class], [self.codec class], self.filePath];
 }
 
 @end

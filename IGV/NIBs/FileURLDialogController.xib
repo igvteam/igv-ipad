@@ -7,8 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FileURLDialogController">
             <connections>
-                <outlet property="bedIndexFileURLDialogTextField" destination="4C0-PV-Msd" id="QSy-YO-Kwz"/>
-                <outlet property="fileURLDialogTextField" destination="5" id="8"/>
+                <outlet property="indexPathDialogTextField" destination="4C0-PV-Msd" id="QSy-YO-Kwz"/>
+                <outlet property="filePathDialogTextField" destination="5" id="8"/>
                 <outlet property="labelTextField" destination="12" id="14"/>
                 <outlet property="view" destination="2" id="3"/>
             </connections>

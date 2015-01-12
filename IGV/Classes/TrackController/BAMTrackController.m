@@ -74,7 +74,7 @@
 
     if (nil != self) {
 
-        self.bamReader = [[[BAMReader alloc] initWithPath:resource.path] autorelease];
+        self.bamReader = [[[BAMReader alloc] initWithPath:resource.filePath] autorelease];
 
         AlignmentTrackView *alignmentTrack = [[[AlignmentTrackView alloc] initWithFrame:[AlignmentTrackView trackFrame]
                                                                                resource:resource

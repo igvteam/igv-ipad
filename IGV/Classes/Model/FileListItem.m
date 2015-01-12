@@ -36,37 +36,38 @@
 #import "FileListItem.h"
 
 @implementation FileListItem
-
-@synthesize path = _path;
+@synthesize filePath = _filePath;
+@synthesize indexPath = _indexPath;
 @synthesize label = _label;
 @synthesize enabled = _enabled;
 @synthesize genome = _genome;
 
 - (void) dealloc {
 
-    self.path = nil;
+    self.filePath = nil;
+    self.indexPath = nil;
     self.label = nil;
     self.genome = nil;
 
     [super dealloc];
 }
 
-- (id)initWithFileURLPath:(NSString *)fileURLPath label:(NSString *)label genome:(NSString *)genome {
+- (id)initWithFilePath:(NSString *)filePath label:(NSString *)label genome:(NSString *)genome {
 
     self = [super init];
 
     if (nil != self) {
 
         self.enabled = NO;
-        self.path = fileURLPath;
-        self.label = ([label isEqualToString:@""] || nil == label) ? [FileListItem defaultLabelWithFileURLPath:fileURLPath] : label;
+        self.filePath = filePath;
+        self.label = ([label isEqualToString:@""] || nil == label) ? [FileListItem defaultLabelWithFilePath:filePath] : label;
         self.genome = genome;
     }
 
     return self;
 }
 
-+ (NSString *)defaultLabelWithFileURLPath:(NSString *)fileURLPath {
++ (NSString *)defaultLabelWithFilePath:(NSString *)filePath {
 
 //    NSArray *parts = [path componentsSeparatedByString:@"/"];
 //    NSString *filename = [parts objectAtIndex:([parts count] - 1)];
@@ -84,7 +85,7 @@
 }
 
 - (NSString *)userDefaultsKey {
-    return [NSString stringWithFormat:@"%@#%@", self.genome, self.path];
+    return [NSString stringWithFormat:@"%@#%@", self.genome, self.filePath];
 }
 
 + (NSString *)labelWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem {
@@ -93,7 +94,7 @@
     return [fileListDefaultsItem objectForKey:key];
 }
 
-+ (NSString *)urlStringWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem {
++ (NSString *)filePathWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem {
     return [self stringWithFileListDefaultsItem:fileListDefaultsItem index:1];
 }
 
@@ -117,7 +118,7 @@
 
 - (NSString *)tableViewCellURL {
 
-    NSArray *parts = [self.path componentsSeparatedByString:@"://"];
+    NSArray *parts = [self.filePath componentsSeparatedByString:@"://"];
     NSString *str = [parts objectAtIndex:([parts count] - 1)];
 
     return str;

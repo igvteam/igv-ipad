@@ -47,7 +47,7 @@
 
 - (void) testReadFeatures {
 
-    LMResource *resource = [LMResource resourceWithName:nil path:self.path];
+    LMResource *resource = [LMResource resourceWithName:nil filePath:self.path];
 
     BaseFeatureSource *baseFeatureSource = [BaseFeatureSource featureSourceWithResource:resource];
     STAssertNotNil(baseFeatureSource, nil);

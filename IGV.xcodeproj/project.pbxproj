@@ -1677,6 +1677,9 @@
 					24F18516F1E67D09AAAD2E05 = {
 						DevelopmentTeam = VKH8Z386H9;
 					};
+					24F18516F1E67D09AAAD2E20 = {
+						DevelopmentTeam = VKH8Z386H9;
+					};
 				};
 			};
 			buildConfigurationList = 24F18516F1E67D09AAAD2DFF /* Build configuration list for PBXProject "IGV" */;
@@ -2086,7 +2089,7 @@
 		24F18516F1E67D09AAAD2E07 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2114,7 +2117,7 @@
 		24F18516F1E67D09AAAD2E08 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2142,7 +2145,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/IGV.app/IGV";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Douglass Turner (6AHNL8MSSA)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
@@ -2151,7 +2155,7 @@
 				GCC_PREFIX_HEADER = "IGV/IGV-Prefix.pch";
 				INFOPLIST_FILE = "IGVTests/IGVTests-Info.plist";
 				PRODUCT_NAME = IGVTests;
-				PROVISIONING_PROFILE = "C4A54193-C849-43AC-A31B-4B6A0C0A02BA";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -2161,7 +2165,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/IGV.app/IGV";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Douglass Turner (6AHNL8MSSA)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
@@ -2170,7 +2175,7 @@
 				GCC_PREFIX_HEADER = "IGV/IGV-Prefix.pch";
 				INFOPLIST_FILE = "IGVTests/IGVTests-Info.plist";
 				PRODUCT_NAME = IGVTests;
-				PROVISIONING_PROFILE = "C4A54193-C849-43AC-A31B-4B6A0C0A02BA";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -2199,7 +2204,7 @@
 		31165C5D15C60BBD002D61AA /* Alpha Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2228,7 +2233,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/IGV.app/IGV";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Douglass Turner (6AHNL8MSSA)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
@@ -2237,7 +2243,7 @@
 				GCC_PREFIX_HEADER = "IGV/IGV-Prefix.pch";
 				INFOPLIST_FILE = "IGVTests/IGVTests-Info.plist";
 				PRODUCT_NAME = IGVTests;
-				PROVISIONING_PROFILE = "C4A54193-C849-43AC-A31B-4B6A0C0A02BA";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};

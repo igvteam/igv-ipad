@@ -15,7 +15,7 @@
 
 - (void)testFileListItemCreationWithNilLabel {
 
-    FileListItem *fileListItem = [[[FileListItem alloc] initWithFileURLPath:@"http://www.broadinstitute.org/igvdata/1KG/pilot2Bams/NA12878.SLX.bam" label:nil genome:nil] autorelease];
+    FileListItem *fileListItem = [[[FileListItem alloc] initWithFilePath:@"http://www.broadinstitute.org/igvdata/1KG/pilot2Bams/NA12878.SLX.bam" label:nil genome:nil] autorelease];
     STAssertNotNil(fileListItem, nil);
 
     ALog(@"%@", fileListItem);

@@ -41,25 +41,16 @@
 #import "BaseFeatureSource.h"
 
 @class Codec;
-@class TrackController;
 @class FeatureList;
-@class LinearIndex;
-@class FeatureCache;
 @class FeatureInterval;
-@class BWTotalSummary;
-
 
 @interface AsciiFeatureSource : BaseFeatureSource <FeatureSource>
-- (id)initWithPath:(NSString *)path;
+- (id)initWithFilePath:(NSString *)filePath;
 @property(nonatomic, retain) NSMutableDictionary *trackProperties;
-@property(nonatomic, retain) LinearIndex *featureIndex;
-@property(nonatomic, copy) NSString *path;
+@property(nonatomic, copy) NSString *filePath;
 @property(nonatomic, retain) Codec *codec;
-@property(nonatomic, retain) BWTotalSummary *bwTotalSummary;
-@property(nonatomic) int indexLoadAttempts;
-
 - (void)loadFeaturesForInterval:(FeatureInterval *)interval completion:(LoadFeaturesCompletion)completion;
-+ (AsciiFeatureSource *)featureSourceForPath:(NSString *)path;
+//+ (AsciiFeatureSource *)featureSourceForPath:(NSString *)path;
 @end
 
 

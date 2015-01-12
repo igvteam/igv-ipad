@@ -38,18 +38,17 @@
 
 @interface FileListItem : NSObject
 
-- (id)initWithFileURLPath:(NSString *)fileURLPath label:(NSString *)label genome:(NSString *)genome;
-@property(nonatomic, retain) NSString *path;
+- (id)initWithFilePath:(NSString *)filePath label:(NSString *)label genome:(NSString *)genome;
+@property(nonatomic, retain) NSString *filePath;
+@property(nonatomic, retain) NSString *indexPath;
 @property(nonatomic, retain) NSString *label;
 @property(nonatomic, assign) BOOL enabled;
 @property(nonatomic, copy) NSString *genome;
 - (NSString *)tableViewCellLabel;
 - (NSString *)tableViewCellURL;
-+ (NSString *)labelWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
-+ (NSString *)urlStringWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
-+ (NSString *)genomeWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
-
-+ (NSString *)defaultLabelWithFileURLPath:(NSString *)fileURLPath;
-
 - (NSDictionary *)fileListDefaultsItem;
++ (NSString *)labelWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
++ (NSString *)filePathWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
++ (NSString *)genomeWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
++ (NSString *)defaultLabelWithFilePath:(NSString *)filePath;
 @end

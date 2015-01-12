@@ -421,7 +421,7 @@ static const long long int kLocusHalfWidth = 40;
         if (![currentPathSet containsObject:path]) {
 
             if ([IGVHelpful isUsablePath:[path removeHeadTailWhitespace] blurb:nil]) {
-                [resources addObject:[LMResource resourceWithName:nil path:path]];
+                [resources addObject:[LMResource resourceWithName:nil filePath:path]];
             }
 
         } else {
@@ -487,7 +487,7 @@ static const long long int kLocusHalfWidth = 40;
             for (LMResource *resource in session.resources) {
 
                 // ignore txt files
-                if ([resource.path rangeOfString:@".txt"].location != NSNotFound) {
+                if ([resource.filePath rangeOfString:@".txt"].location != NSNotFound) {
                     continue;
                 } else {
                     [resources addObject:resource];

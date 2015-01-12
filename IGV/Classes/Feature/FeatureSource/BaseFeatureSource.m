@@ -142,39 +142,39 @@
 
 + (BaseFeatureSource *)featureSourceWithResource:(LMResource *)resource {
 
-    NSString *path = [[resource.path lowercaseString] stringByReplacingOccurrencesOfString:@".gz" withString:@""];
+    NSString *path = [[resource.filePath lowercaseString] stringByReplacingOccurrencesOfString:@".gz" withString:@""];
     NSString *pathExtension = [path pathExtension];
 
     if ([pathExtension isEqualToString:@"tdf"]) {
         return [[[TDFFeatureSource alloc] initWithResource:resource] autorelease];
     }
 
-    BOOL isGzipped = ([resource.path rangeOfString:@".gz"].location != NSNotFound);
+    BOOL isGzipped = ([resource.filePath rangeOfString:@".gz"].location != NSNotFound);
     if (isGzipped) {
         // Load header for basic info on file (in particular content length)
-        HttpResponse *response = [URLDataLoader loadHeaderSynchronousWithPath:[NSString stringWithFormat:@"%@.tbi", resource.path]];
+        HttpResponse *response = [URLDataLoader loadHeaderSynchronousWithPath:[NSString stringWithFormat:@"%@.tbi", resource.filePath]];
         if ([IGVHelpful isValidStatusCode:[response statusCode]]) {
-            return [[[TabixFeatureSource alloc] initWithPath:resource.path] autorelease];
+            return [[[TabixFeatureSource alloc] initWithPath:resource.filePath] autorelease];
         }
     }
 
     if ([pathExtension isEqualToString:@"seg"]) {
 
-        return [[[SEGFeatureSource alloc] initWithPath:resource.path] autorelease];
+        return [[[SEGFeatureSource alloc] initWithPath:resource.filePath] autorelease];
     }
 
     if ([pathExtension isEqualToString:@"bw"] || [pathExtension isEqualToString:@"bigwig"]) {
 
-        return [[[BWFeatureSource alloc] initWithPath:resource.path] autorelease];
+        return [[[BWFeatureSource alloc] initWithPath:resource.filePath] autorelease];
     }
 
     if ([pathExtension isEqualToString:@"bb"] || [pathExtension isEqualToString:@"bigbed"]) {
 
-        return [[[BWFeatureSource alloc] initWithPath:resource.path] autorelease];
+        return [[[BWFeatureSource alloc] initWithPath:resource.filePath] autorelease];
     }
 
     // Default -- we really should check extensions here to be sure we can handle it
-    return [[[AsciiFeatureSource alloc] initWithPath:resource.path] autorelease];
+    return [[[AsciiFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
 
 }
 
