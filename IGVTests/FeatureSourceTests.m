@@ -146,7 +146,7 @@
     STAssertNotNil(featureInterval, nil);
 
     TDFFeatureSource *tdfFeatureSource = (TDFFeatureSource *) baseFeatureSource;
-    tdfFeatureSource.reader = [[[TDFReader alloc] initWithPath:tdfFeatureSource.path completion:^(HttpResponse *response) {
+    tdfFeatureSource.reader = [[[TDFReader alloc] initWithPath:tdfFeatureSource.filePath completion:^(HttpResponse *response) {
 
         tdfFeatureSource.trackName = [tdfFeatureSource.reader.trackNames objectAtIndex:0];
 

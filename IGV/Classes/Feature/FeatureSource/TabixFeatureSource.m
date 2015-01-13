@@ -96,14 +96,10 @@ const int TAD_LIDX_SHIFT = 14;
 @end
 
 @interface TabixFeatureSource ()
-
 @property(nonatomic, retain) Codec *codec;
 @property(nonatomic, retain) BlockCompressedInputStream *bis;
 @property(nonatomic, retain) NSMutableDictionary *indexDictionary;
 @property(nonatomic, retain) NSMutableArray *sequenceNames;
-@property(nonatomic, copy) NSString *path;
-
-
 - (void)readIndex;
 @end
 
@@ -120,11 +116,10 @@ const int TAD_LIDX_SHIFT = 14;
 @synthesize bis = _bis;
 @synthesize indexDictionary = _indexDictionary;
 @synthesize sequenceNames = _sequenceNames;
-@synthesize path = _path;
+@synthesize filePath = _path;
 
 - (void)dealloc {
 
-    self.path = nil;
     self.sequenceNames = nil;
     self.indexDictionary = nil;
     self.bis = nil;
@@ -133,14 +128,14 @@ const int TAD_LIDX_SHIFT = 14;
     [super dealloc];
 }
 
-- (id)initWithPath:(NSString *)path {
+- (id)initWithFilePath:(NSString *)filePath {
 
     self = [super init];
 
     if (self) {
 
-        self.path = path;
-        self.bis = [BlockCompressedInputStream streamForURL:path];
+        self.filePath = filePath;
+        self.bis = [BlockCompressedInputStream streamForURL:filePath];
 
         // TODO -- determine codec from aPath
         self.codec = [[[BEDCodec alloc] init] autorelease];
@@ -285,7 +280,7 @@ const int TAD_LIDX_SHIFT = 14;
 */
 - (void)readIndex {
 
-    NSString *tabixPath = [self.path stringByAppendingString:@".tbi"];
+    NSString *tabixPath = [self.filePath stringByAppendingString:@".tbi"];
 
     BlockCompressedInputStream *tabixBIS = [[BlockCompressedInputStream streamForURL:tabixPath] retain];
 
@@ -496,7 +491,7 @@ const int TAD_LIDX_SHIFT = 14;
 
 - (NSString *)description {
 
-    return [NSString stringWithFormat:@"%@ %@ path %@.", [self class], [self.codec class], self.path];
+    return [NSString stringWithFormat:@"%@ %@ path %@.", [self class], [self.codec class], self.filePath];
 }
 
 @end

@@ -89,6 +89,24 @@
     [super dealloc];
 }
 
+- (id)initWithResource:(LMResource *)resource {
+
+    self = [super init];
+
+    if (nil != self) {
+        self.indexLoadAttempts = 0;
+        self.filePath = resource.filePath;
+        self.indexPath = resource.indexPath;
+
+        self.codec = [[CodecFactory sharedCodecFactory] codecForPath:resource.filePath];
+
+        self.bwTotalSummary = [[BWTotalSummary alloc] autorelease];
+    }
+
+    return self;
+
+}
+
 - (id)initWithFilePath:(NSString *)filePath {
 
     self = [super init];
@@ -133,7 +151,6 @@
     return featureList;
 
 }
-
 
 //
 //  Load (or retrieve from cache) features for the requested interval and signal completion with a callback

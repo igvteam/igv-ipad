@@ -55,12 +55,16 @@
 @synthesize trackProperties = _trackProperties;
 @synthesize chrTable = _chrTable;
 @synthesize featureCache = _featureCache;
+@synthesize filePath = _filePath;
+@synthesize indexPath = _indexPath;
 
 - (void)dealloc {
 
     self.trackProperties = nil;
     self.chrTable = nil;
     self.featureCache = nil;
+    self.filePath = nil;
+    self.indexPath = nil;
 
     [super dealloc];
 }
@@ -154,27 +158,28 @@
         // Load header for basic info on file (in particular content length)
         HttpResponse *response = [URLDataLoader loadHeaderSynchronousWithPath:[NSString stringWithFormat:@"%@.tbi", resource.filePath]];
         if ([IGVHelpful isValidStatusCode:[response statusCode]]) {
-            return [[[TabixFeatureSource alloc] initWithPath:resource.filePath] autorelease];
+            return [[[TabixFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
         }
     }
 
     if ([pathExtension isEqualToString:@"seg"]) {
 
-        return [[[SEGFeatureSource alloc] initWithPath:resource.filePath] autorelease];
+        return [[[SEGFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
     }
 
     if ([pathExtension isEqualToString:@"bw"] || [pathExtension isEqualToString:@"bigwig"]) {
 
-        return [[[BWFeatureSource alloc] initWithPath:resource.filePath] autorelease];
+        return [[[BWFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
     }
 
     if ([pathExtension isEqualToString:@"bb"] || [pathExtension isEqualToString:@"bigbed"]) {
 
-        return [[[BWFeatureSource alloc] initWithPath:resource.filePath] autorelease];
+        return [[[BWFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
     }
 
     // Default -- we really should check extensions here to be sure we can handle it
-    return [[[AsciiFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
+//    return [[[AsciiFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
+    return [[[AsciiFeatureSource alloc] initWithResource:resource] autorelease];
 
 }
 

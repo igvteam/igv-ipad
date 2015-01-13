@@ -38,14 +38,20 @@
 
 @interface FileListItem : NSObject
 
-- (id)initWithFilePath:(NSString *)filePath label:(NSString *)label genome:(NSString *)genome;
+- (id)initWithFilePath:(NSString *)filePath
+                 label:(NSString *)label
+                genome:(NSString *)genome
+             indexPath:(NSString *)indexPath;
+
 @property(nonatomic, retain) NSString *filePath;
 @property(nonatomic, retain) NSString *indexPath;
 @property(nonatomic, retain) NSString *label;
 @property(nonatomic, assign) BOOL enabled;
 @property(nonatomic, copy) NSString *genome;
+
 - (NSString *)tableViewCellLabel;
 - (NSString *)tableViewCellURL;
+
 - (NSDictionary *)fileListDefaultsItem;
 + (NSString *)labelWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
 + (NSString *)filePathWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;

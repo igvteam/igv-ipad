@@ -49,6 +49,8 @@ static const int MINIMUM_VISIBILITY_WINDOW = 10000;
 @property(nonatomic, retain) NSMutableDictionary *chrTable;
 @property(nonatomic, retain) FeatureCache *featureCache;
 @property(nonatomic) long long int visibilityWindowThreshold;
+@property(nonatomic, copy) NSString *filePath;
+@property(nonatomic, copy) NSString *indexPath;
 
 - (id)featuresForFeatureInterval:(FeatureInterval *)featureInterval;
 

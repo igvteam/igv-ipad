@@ -43,10 +43,9 @@
 
 @interface TDFFeatureSource : BaseFeatureSource <FeatureSource>
 - (id)initWithResource:(LMResource *)resource;
-- (id)initWithPath:(NSString *)path;
+- (id)initWithFilePath:(NSString *)filePath;
 @property(nonatomic, copy) NSString *trackName;
 @property(nonatomic, assign) NSInteger maxZoom;
-@property(nonatomic, copy) NSString *path;
 @property(nonatomic, retain) TDFReader *reader;
 - (void)selfParseGroupAttributes:(TDFGroup *)tdfGroup;
 @end

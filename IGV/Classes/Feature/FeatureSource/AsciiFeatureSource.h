@@ -45,9 +45,9 @@
 @class FeatureInterval;
 
 @interface AsciiFeatureSource : BaseFeatureSource <FeatureSource>
+- (id)initWithResource:(LMResource *)resource;
 - (id)initWithFilePath:(NSString *)filePath;
 @property(nonatomic, retain) NSMutableDictionary *trackProperties;
-@property(nonatomic, copy) NSString *filePath;
 @property(nonatomic, retain) Codec *codec;
 - (void)loadFeaturesForInterval:(FeatureInterval *)interval completion:(LoadFeaturesCompletion)completion;
 //+ (AsciiFeatureSource *)featureSourceForPath:(NSString *)path;

@@ -52,7 +52,10 @@
     [super dealloc];
 }
 
-- (id)initWithFilePath:(NSString *)filePath label:(NSString *)label genome:(NSString *)genome {
+- (id)initWithFilePath:(NSString *)filePath
+                 label:(NSString *)label
+                genome:(NSString *)genome
+             indexPath:(NSString *)indexPath {
 
     self = [super init];
 
@@ -62,6 +65,7 @@
         self.filePath = filePath;
         self.label = ([label isEqualToString:@""] || nil == label) ? [FileListItem defaultLabelWithFilePath:filePath] : label;
         self.genome = genome;
+        self.indexPath = indexPath;
     }
 
     return self;

@@ -79,6 +79,8 @@
 
 - (void)viewDidUnload {
     self.filePathDialogTextField = nil;
+    self.indexPathDialogTextField = nil;
+    self.labelTextField = nil;
 }
 
 #pragma mark - UITextFieldDelegate Methods
@@ -87,7 +89,8 @@
     
     [self.labelTextField resignFirstResponder];
     [self.filePathDialogTextField resignFirstResponder];
-    
+    [self.indexPathDialogTextField resignFirstResponder];
+
     [self.delegate fileURLDialogController:self addFileListItem:nil];
 
 }
@@ -99,7 +102,7 @@
 - (void)saveWithBarButtonItem:(UIBarButtonItem *)barButtonItem {
     [self addFileListItemWithFilePathTextField:self.filePathDialogTextField
                                 labelTextField:self.labelTextField
-                            indexPathTextField:nil];
+                            indexPathTextField:self.indexPathDialogTextField];
 
 }
 
@@ -107,7 +110,7 @@
 
     [self addFileListItemWithFilePathTextField:self.filePathDialogTextField
                                 labelTextField:self.labelTextField
-                            indexPathTextField:nil];
+                            indexPathTextField:self.indexPathDialogTextField];
 
     return YES;
 }
@@ -140,14 +143,36 @@
         return;
     }
 
+    NSString *indexPath = nil;
+    if (!indexPathIsAbsent) {
+
+        indexPath = [filePathTextField.text removeHeadTailWhitespace];
+
+        if (![IGVHelpful isUsablePath:indexPathTextField.text blurb:&blurb]) {
+
+            UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                                 message:blurb
+                                                                delegate:self
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil] autorelease];
+
+            [alertView show];
+
+            return;
+        }
+
+    }
+
     NSString *label = (nil == labelTextField.text) ? [FileListItem defaultLabelWithFilePath:filePath] : labelTextField.text;
 
     FileListItem *fileListItem = [[[FileListItem alloc] initWithFilePath:filePath
                                                                    label:label
-                                                                  genome:[GenomeManager sharedGenomeManager].currentGenomeName] autorelease];
+                                                                  genome:[GenomeManager sharedGenomeManager].currentGenomeName
+                                                               indexPath:indexPath] autorelease];
 
     [self.labelTextField resignFirstResponder];
     [self.filePathDialogTextField resignFirstResponder];
+    [self.indexPathDialogTextField resignFirstResponder];
 
     [self.delegate fileURLDialogController:self addFileListItem:fileListItem];
 

@@ -59,27 +59,23 @@ int const ZOOMDATA_RECORD_SIZE = 32;
 @property(nonatomic, retain) FeatureList *currentFeatureList;
 @end
 
-@implementation BWFeatureSource {
-
-}
-
+@implementation BWFeatureSource
 
 - (void)dealloc {
-    self.path = nil;
     self.reader = nil;
     self.currentFeatureList = nil;
     [super dealloc];
 }
 
-- (id)initWithPath:(NSString *)path {
+- (id)initWithFilePath:(NSString *)filePath {
 
     self = [super init];
 
     if (nil != self) {
 
         // self.color = resource.color;
-        self.path = path;
-        self.reader = [[[BWReader alloc] initWithPath:self.path] autorelease];
+        self.filePath = filePath;
+        self.reader = [[[BWReader alloc] initWithPath:self.filePath] autorelease];
         self.currentFeatureList = nil;
 
     }

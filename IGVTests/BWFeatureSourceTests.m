@@ -24,7 +24,7 @@
     //NSString *path = @"http://localhost/~jrobinso/Data/BW/bigWigExample.bw";
 
 
-    BWFeatureSource *bwFeatureSource = [[[BWFeatureSource alloc] initWithPath:path] autorelease];
+    BWFeatureSource *bwFeatureSource = [[[BWFeatureSource alloc] initWithFilePath:path] autorelease];
     [bwFeatureSource.reader loadHeader];
 
 
@@ -41,7 +41,7 @@
     //NSString *path = @"http://localhost/~jrobinso/Data/BW/bigWigExample.bw";
 
 
-    BWFeatureSource *bwFeatureSource = [[[BWFeatureSource alloc] initWithPath:path] autorelease];
+    BWFeatureSource *bwFeatureSource = [[[BWFeatureSource alloc] initWithFilePath:path] autorelease];
     [bwFeatureSource.reader loadHeader];
 
 
@@ -87,7 +87,7 @@
 
     double bpPerPixel = 1 / [[IGVContext sharedIGVContext] pointsPerBase ];
 
-    BWFeatureSource *bwFeatureSource = [[[BWFeatureSource alloc] initWithPath:path] autorelease];
+    BWFeatureSource *bwFeatureSource = [[[BWFeatureSource alloc] initWithFilePath:path] autorelease];
     [bwFeatureSource.reader loadHeader];
 
     FeatureInterval *featureInterval = [FeatureInterval intervalWithChromosomeName:chr start:startBase end:endBase];
@@ -135,7 +135,7 @@
 
     double bpPerPixel = 1 / [[IGVContext sharedIGVContext] pointsPerBase ];
 
-    BWFeatureSource *bwFeatureSource = [[[BWFeatureSource alloc] initWithPath:path] autorelease];
+    BWFeatureSource *bwFeatureSource = [[[BWFeatureSource alloc] initWithFilePath:path] autorelease];
     [bwFeatureSource.reader loadHeader];
 
     FeatureInterval *featureInterval = [FeatureInterval intervalWithChromosomeName:chr start:startBase end:endBase];

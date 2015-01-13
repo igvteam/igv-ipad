@@ -37,16 +37,17 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol FileURLDialogDelegate;
+@protocol FilePathDialogDelegate;
 @class FileListItem;
 
 @interface FileURLDialogController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate>
-@property(nonatomic, assign) id <FileURLDialogDelegate> delegate;
+@property(nonatomic, assign) id <FilePathDialogDelegate> delegate;
 @end
 
-@protocol FileURLDialogDelegate <NSObject>
+@protocol FilePathDialogDelegate <NSObject>
 
 // file == nil on cancel
-- (void)fileURLDialogController:(FileURLDialogController *)fileURLDialogController addFileListItem:(FileListItem *)fileListItem;
+- (void)fileURLDialogController:(FileURLDialogController *)fileURLDialogController
+                addFileListItem:(FileListItem *)fileListItem;
 
 @end
