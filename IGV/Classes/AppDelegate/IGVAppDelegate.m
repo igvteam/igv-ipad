@@ -421,7 +421,7 @@ static const long long int kLocusHalfWidth = 40;
         if (![currentPathSet containsObject:path]) {
 
             if ([IGVHelpful isUsablePath:[path removeHeadTailWhitespace] blurb:nil]) {
-                [resources addObject:[LMResource resourceWithName:nil filePath:path]];
+                [resources addObject:[LMResource resourceWithName:nil filePath:path indexPath:nil]];
             }
 
         } else {

@@ -96,7 +96,8 @@
     for (NSDictionary *fileListDefaultsItem in filesListDefaults) {
 
         NSString *genome    = [FileListItem genomeWithFileListDefaultsItem:fileListDefaultsItem];
-        NSString *fileURLPath = [FileListItem filePathWithFileListDefaultsItem:fileListDefaultsItem];
+        NSString *filePath = [FileListItem filePathWithFileListDefaultsItem:fileListDefaultsItem];
+        NSString *indexPath = [FileListItem indexPathWithFileListDefaultsItem:fileListDefaultsItem];
         NSString *label     = [FileListItem labelWithFileListDefaultsItem:fileListDefaultsItem];
 
         if (nil == [self.urlList objectForKey:genome]) {
@@ -104,7 +105,7 @@
         }
 
         NSMutableArray *fileListItems = [self.urlList objectForKey:genome];
-        [fileListItems addObject:[[[FileListItem alloc] initWithFilePath:fileURLPath label:label genome:genome indexPath:nil] autorelease]];
+        [fileListItems addObject:[[[FileListItem alloc] initWithFilePath:filePath label:label genome:genome indexPath:indexPath] autorelease]];
 
     }
 

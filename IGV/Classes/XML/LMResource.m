@@ -59,7 +59,8 @@
 @interface LMResource ()
 - (id)initWithElement:(SMXMLElement *)element;
 - (id)initWithFileListItem:(FileListItem *)fileListItem;
-- (id)initWithName:(NSString *)name filePath:(NSString *)filePath;
+
+- (id)initWithName:(NSString *)name filePath:(NSString *)filePath indexPath:(NSString *)indexPath;
 - (NSString *)resourceNameWithString:(NSString *)string filePath:(NSString *)filePath;
 @end
 
@@ -122,12 +123,13 @@
     return self;
 }
 
-- (id)initWithName:(NSString *)name filePath:(NSString *)filePath {
+- (id)initWithName:(NSString *)name filePath:(NSString *)filePath indexPath:(NSString *)indexPath {
 
     self = [super init];
     if (nil != self) {
 
         self.filePath = filePath;
+        self.indexPath = indexPath;
         self.enabled = NO;
         self.name = [self resourceNameWithString:name filePath:filePath];
     }
@@ -168,8 +170,8 @@
     return [[[LMResource alloc] initWithFileListItem:fileListItem] autorelease];
 }
 
-+ (id)resourceWithName:(NSString *)name filePath:(NSString *)filePath {
-    return [[[LMResource alloc] initWithName:name filePath:filePath] autorelease];
++ (id)resourceWithName:(NSString *)name filePath:(NSString *)filePath indexPath:(NSString *)indexPath {
+    return [[[LMResource alloc] initWithName:name filePath:filePath indexPath:indexPath] autorelease];
 }
 
 + (id)resourceWithElement:(SMXMLElement *)element {

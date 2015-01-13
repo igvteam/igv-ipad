@@ -16,7 +16,7 @@
 
 - (void)testTrackControllerCreation {
 
-    LMResource *lmResource = [LMResource resourceWithName:nil filePath:@"https://dm.genomespace.org/datamanager/file/Home/igvtest/ipad/hg18_refseq_genes.bed"];
+    LMResource *lmResource = [LMResource resourceWithName:nil filePath:@"https://dm.genomespace.org/datamanager/file/Home/igvtest/ipad/hg18_refseq_genes.bed" indexPath:nil];
     STAssertNotNil(lmResource, nil);
     ALog(@"%@", lmResource);
 

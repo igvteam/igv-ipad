@@ -163,17 +163,14 @@
     }
 
     if ([pathExtension isEqualToString:@"seg"]) {
-
         return [[[SEGFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
     }
 
     if ([pathExtension isEqualToString:@"bw"] || [pathExtension isEqualToString:@"bigwig"]) {
-
         return [[[BWFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
     }
 
     if ([pathExtension isEqualToString:@"bb"] || [pathExtension isEqualToString:@"bigbed"]) {
-
         return [[[BWFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
     }
 

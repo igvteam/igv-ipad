@@ -56,6 +56,6 @@
 - (NSString *)tableViewCellPath;
 
 + (id)resourceWithFileListItem:(FileListItem *)fileListItem;
-+ (id)resourceWithName:(NSString *)name filePath:(NSString *)filePath;
++ (id)resourceWithName:(NSString *)name filePath:(NSString *)filePath indexPath:(NSString *)indexPath;
 + (id)resourceWithElement:(SMXMLElement*) element;
 @end

@@ -89,13 +89,19 @@
 }
 
 - (NSString *)userDefaultsKey {
-    return [NSString stringWithFormat:@"%@#%@", self.genome, self.filePath];
+
+    NSString *string = (self.indexPath) ? [NSString stringWithFormat:@"%@#%@#%@", self.genome, self.filePath, self.indexPath] : [NSString stringWithFormat:@"%@#%@", self.genome, self.filePath];
+    return string;
 }
 
 + (NSString *)labelWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem {
 
     NSString *key = [[fileListDefaultsItem allKeys] objectAtIndex:0];
     return [fileListDefaultsItem objectForKey:key];
+}
+
++ (NSString *)indexPathWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem {
+    return [self stringWithFileListDefaultsItem:fileListDefaultsItem index:2];
 }
 
 + (NSString *)filePathWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem {
@@ -111,7 +117,7 @@
     NSString *key = [[fileListDefaultsItem allKeys] objectAtIndex:0];
     NSArray *parts = [key componentsSeparatedByString:@"#"];
 
-    return [parts objectAtIndex:index];
+    return (index < [parts count]) ? [parts objectAtIndex:index] : nil;
 }
 
 #pragma mark - Table view delegate methods

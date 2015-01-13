@@ -55,6 +55,8 @@
 - (NSDictionary *)fileListDefaultsItem;
 + (NSString *)labelWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
 + (NSString *)filePathWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
++ (NSString *)indexPathWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
+
 + (NSString *)genomeWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
 + (NSString *)defaultLabelWithFilePath:(NSString *)filePath;
 @end

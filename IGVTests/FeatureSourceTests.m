@@ -60,7 +60,7 @@
 //    NSString *path = @"https://dl.dropboxusercontent.com/u/11270323/BroadInstitute/dataFormats/WIG/heart.SLC25A3.wig";
     NSString *path = @"https://dl.dropboxusercontent.com/u/11270323/BroadInstitute/dataFormats/Peak/wgEncodeBroadHistoneGm12878CtcfStdPk.peak";
 
-    BaseFeatureSource *featureSource = [BaseFeatureSource featureSourceWithResource:[LMResource resourceWithName:nil filePath:path]];
+    BaseFeatureSource *featureSource = [BaseFeatureSource featureSourceWithResource:[LMResource resourceWithName:nil filePath:path indexPath:nil]];
     STAssertNotNil(featureSource, nil);
 
     ALog(@"%@", [featureSource description]);
@@ -108,7 +108,7 @@
 
     NSString *path = @"http://www.broadinstitute.org/igvdata/ipad/hg18_tabix_genes.bed.gz";
 
-    LMResource *resource = [LMResource resourceWithName:nil filePath:path];
+    LMResource *resource = [LMResource resourceWithName:nil filePath:path indexPath:nil];
 
     BaseFeatureSource *featureSource = [BaseFeatureSource featureSourceWithResource:resource];
     STAssertNotNil(featureSource, nil);
@@ -138,7 +138,7 @@
 
 //    NSString *path = @"http://www.broadinstitute.org/igvdata/encode/hg18/broadHistone/SignalGm12878Ctcf.tdf";
     NSString *path = @"http://www.broadinstitute.org/igvdata/encode/hg19/broadHistone/wgEncodeBroadHistoneGm12878ControlStdSig.wig.tdf";
-    BaseFeatureSource *baseFeatureSource = [BaseFeatureSource featureSourceWithResource:[LMResource resourceWithName:nil filePath:path]];
+    BaseFeatureSource *baseFeatureSource = [BaseFeatureSource featureSourceWithResource:[LMResource resourceWithName:nil filePath:path indexPath:nil]];
     STAssertNotNil(baseFeatureSource, nil);
 
 //    FeatureInterval *featureInterval = [FeatureInterval intervalWithChromosomeName:@"16" start:0 end:88827254];
@@ -193,7 +193,7 @@
 //    NSString *path = @"http://www.broadinstitute.org/igvdata/Tumorscape/gz/Esophageal%20adenocarcinoma.seg.gz";
 //    NSString *path = @"http://www.broadinstitute.org/igvdata/tcga/gbmsubtypes/Broad.080528.subtypes.seg.gz";
 
-    BaseFeatureSource *featureSource = [BaseFeatureSource featureSourceWithResource:[LMResource resourceWithName:nil filePath:path]];
+    BaseFeatureSource *featureSource = [BaseFeatureSource featureSourceWithResource:[LMResource resourceWithName:nil filePath:path indexPath:nil]];
     STAssertNotNil(featureSource, nil);
 
     NSArray *chromosomeExtent = [[GenomeManager sharedGenomeManager] chromosomeExtentWithChromosomeName:@"1"];

@@ -890,7 +890,7 @@ NSTimeInterval const kScreenShotRevealDuration = 1.0/8.0;
 
         NSDictionary *genomeStub = [genomeManager currentGenomeStub];
 
-        LMResource *resource = (nil == [genomeStub objectForKey:@"sequenceLocation"]) ? nil : [LMResource resourceWithName:nil filePath:[genomeStub objectForKey:@"sequenceLocation"]];
+        LMResource *resource = (nil == [genomeStub objectForKey:@"sequenceLocation"]) ? nil : [LMResource resourceWithName:nil filePath:[genomeStub objectForKey:@"sequenceLocation"] indexPath:nil];
 
         self.refSeqTrack.resource = resource;
         self.refSeqTrack.featureList = [[[RefSeqFeatureList alloc] init] autorelease];
@@ -951,8 +951,7 @@ NSTimeInterval const kScreenShotRevealDuration = 1.0/8.0;
     NSDictionary *genomeStub = [genomeManager currentGenomeStub];
     if (nil != [genomeStub objectForKey:kGeneFileKey]) {
 
-        LMResource *resource = [LMResource resourceWithName:kGeneTrackName
-                                                   filePath:[genomeStub objectForKey:kGeneFileKey]];
+        LMResource *resource = [LMResource resourceWithName:kGeneTrackName filePath:[genomeStub objectForKey:kGeneFileKey] indexPath:nil];
 
 
         BaseFeatureSource *featureSource = [BaseFeatureSource featureSourceWithResource:resource];

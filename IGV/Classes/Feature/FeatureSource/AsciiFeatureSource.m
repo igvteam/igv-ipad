@@ -51,10 +51,7 @@
 #import "FeatureInterval.h"
 #import "ParsingUtils.h"
 #import "LittleEndianByteBuffer.h"
-#import "TrackView.h"
-#import "IGVHelpful.h"
 #import "Feature.h"
-#import "IGVContext.h"
 #import "NSArray+Cytoband.h"
 #import "BWTotalSummary.h"
 #import "WIGCodec.h"
@@ -72,7 +69,6 @@
 @implementation AsciiFeatureSource
 
 @synthesize codec;
-@synthesize filePath = _filePath;
 @synthesize featureIndex;
 @synthesize trackProperties;
 @synthesize bwTotalSummary = _bwTotalSummary;
@@ -80,7 +76,6 @@
 
 - (void)dealloc {
 
-    self.filePath = nil;
     self.codec = nil;
     self.featureIndex = nil;
     self.trackProperties = nil;
@@ -94,17 +89,16 @@
     self = [super init];
 
     if (nil != self) {
-        self.indexLoadAttempts = 0;
+
         self.filePath = resource.filePath;
         self.indexPath = resource.indexPath;
 
+        self.indexLoadAttempts = 0;
         self.codec = [[CodecFactory sharedCodecFactory] codecForPath:resource.filePath];
-
         self.bwTotalSummary = [[BWTotalSummary alloc] autorelease];
     }
 
     return self;
-
 }
 
 - (id)initWithFilePath:(NSString *)filePath {
@@ -112,8 +106,10 @@
     self = [super init];
 
     if (nil != self) {
-        self.indexLoadAttempts = 0;
+
         self.filePath = filePath;
+
+        self.indexLoadAttempts = 0;
         self.codec = [[CodecFactory sharedCodecFactory] codecForPath:filePath];
         self.bwTotalSummary = [[BWTotalSummary alloc] autorelease];
     }
@@ -170,7 +166,7 @@
             // Try to load an index first
             self.indexLoadAttempts++;
 
-            NSString *indexPath = [NSString stringWithFormat:@"%@.idx", self.filePath];
+            NSString *indexPath = (self.indexPath) ? self.indexPath : [NSString stringWithFormat:@"%@.idx", self.filePath];
 
             [self loadIndexWithPath:indexPath continuation:^(LinearIndex *linearIndex) {
 
