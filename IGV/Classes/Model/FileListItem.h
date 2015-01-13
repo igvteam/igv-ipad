@@ -44,6 +44,9 @@
              indexPath:(NSString *)indexPath;
 
 @property(nonatomic, retain) NSString *filePath;
+
+- (id)initWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
+
 @property(nonatomic, retain) NSString *indexPath;
 @property(nonatomic, retain) NSString *label;
 @property(nonatomic, assign) BOOL enabled;

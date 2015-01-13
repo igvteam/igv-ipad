@@ -52,6 +52,19 @@
     [super dealloc];
 }
 
+- (id)initWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem {
+
+    NSString *genome    = [FileListItem genomeWithFileListDefaultsItem:   fileListDefaultsItem];
+    NSString *filePath  = [FileListItem filePathWithFileListDefaultsItem: fileListDefaultsItem];
+    NSString *indexPath = [FileListItem indexPathWithFileListDefaultsItem:fileListDefaultsItem];
+    NSString *label     = [FileListItem labelWithFileListDefaultsItem:    fileListDefaultsItem];
+
+    self = [self initWithFilePath:filePath label:label genome:genome indexPath:indexPath];
+
+    return self;
+
+}
+
 - (id)initWithFilePath:(NSString *)filePath
                  label:(NSString *)label
                 genome:(NSString *)genome
