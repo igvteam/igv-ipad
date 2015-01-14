@@ -41,6 +41,7 @@
 #import "NSString+FileURLAndLocusParsing.h"
 #import "GenomeManager.h"
 #import "IGVHelpful.h"
+#import "TrackDelegate.h"
 
 @interface FileURLDialogController ()
 
@@ -113,8 +114,27 @@
 - (IBAction)presentIndexPathDialogHandler:(UISwitch *)presentIndexPathDialog {
 
     ALog(@"%@ %@", [presentIndexPathDialog class], (YES == presentIndexPathDialog.on) ? @"On" : @"Off");
-}
 
+//    const CGFloat shim = 20;
+//    CGFloat dy = shim + CGRectGetHeight(self.labelTextField.frame);
+    CGFloat dy = 79;
+
+    CGRect targetFrame = self.labelTextField.frame;
+    targetFrame.origin.y += (presentIndexPathDialog.on) ? dy : -dy;
+
+    [UIView animateWithDuration:kSquishAnimationDuration
+                          delay:kSquishAnimationDelay
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+
+                         self.labelTextField.frame = targetFrame;
+                     }
+                     completion:^(BOOL finished){
+
+                         self.indexPathDialogTextField.hidden = !(presentIndexPathDialog.on);
+                     }];
+
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 
