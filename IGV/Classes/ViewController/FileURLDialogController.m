@@ -47,9 +47,11 @@
 @property(nonatomic, retain) IBOutlet UITextField *labelTextField;
 @property(nonatomic, retain) IBOutlet UITextField *filePathDialogTextField;
 @property(nonatomic, retain) IBOutlet UITextField *indexPathDialogTextField;
+@property(nonatomic, retain) IBOutlet UISwitch *presentIndexPathDialog;
 
 - (IBAction)cancelWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
 - (IBAction)saveWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
+- (IBAction)presentIndexPathDialogHandler:(UISwitch *)presentIndexPathDialog;
 
 - (void)addFileListItemWithFilePathTextField:(UITextField *)filePathTextField labelTextField:(UITextField *)labelTextField indexPathTextField:(UITextField *)indexPathTextField;
 @end
@@ -59,12 +61,14 @@
 @synthesize labelTextField = _labelTextField;
 @synthesize filePathDialogTextField = _filePathDialogTextField;
 @synthesize indexPathDialogTextField = _indexPathDialogTextField;
+@synthesize presentIndexPathDialog = _presentIndexPathDialog;
 @synthesize delegate;
 
 - (void)dealloc {
 
     self.filePathDialogTextField = nil;
     self.indexPathDialogTextField = nil;
+    self.presentIndexPathDialog = nil;
     self.labelTextField = nil;
     self.delegate = nil;
 
@@ -105,6 +109,12 @@
                             indexPathTextField:self.indexPathDialogTextField];
 
 }
+
+- (IBAction)presentIndexPathDialogHandler:(UISwitch *)presentIndexPathDialog {
+
+    ALog(@"%@ %@", [presentIndexPathDialog class], (YES == presentIndexPathDialog.on) ? @"On" : @"Off");
+}
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 
