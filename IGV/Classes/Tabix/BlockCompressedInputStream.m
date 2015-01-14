@@ -68,11 +68,11 @@
     [super dealloc];
 }
 
-+ (id) streamForURL:(NSString *)aUrlString {
-    return [[[self alloc] initForUrl:aUrlString] autorelease];
++ (id)streamForFilePath:(NSString *)filePath {
+    return [[[self alloc] initWithFilePath:filePath] autorelease];
 }
 
-- (id)initForUrl:(NSString *)aUrlString {
+- (id)initWithFilePath:(NSString *)filePath {
 
     self = [super init];
     if (nil != self) {
@@ -82,7 +82,7 @@
         filePosition = 0;
         fileMark = 0;
 
-        self.path = aUrlString;
+        self.path = filePath;
         // TODO -- query for content length!
     }
     return self;
@@ -121,7 +121,7 @@
     }
 
     BOOL done = NO;
-    int len = 0;
+    NSUInteger len = 0;
     while (!done) {
         unsigned char *bytes = (unsigned char *)currentBlock.bytes;
         while (avail-- > 0) {
@@ -154,7 +154,7 @@
 
     BOOL done = NO;
     BOOL foundCr = NO; // \r found flag
-    int len = 0;
+    NSUInteger len = 0;
     while (!done) {
         unsigned char *bytes = (unsigned char *)currentBlock.bytes;
         while (avail-- > 0) {

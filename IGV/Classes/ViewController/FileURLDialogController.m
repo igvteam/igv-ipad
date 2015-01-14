@@ -146,9 +146,9 @@
     NSString *indexPath = nil;
     if (!indexPathIsAbsent) {
 
-        indexPath = [filePathTextField.text removeHeadTailWhitespace];
+        indexPath = [indexPathTextField.text removeHeadTailWhitespace];
 
-        if (![IGVHelpful isUsablePath:indexPathTextField.text blurb:&blurb]) {
+        if (![IGVHelpful isUsableIndexPath:indexPathTextField.text blurb:&blurb]) {
 
             UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Error"
                                                                  message:blurb

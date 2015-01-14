@@ -45,6 +45,7 @@
 #import "BEDCodec.h"
 #import "GenomeManager.h"
 #import "NSArray+Cytoband.h"
+#import "LMResource.h"
 
 const int MAX_BIN = 37450;
 const int TAD_LIDX_SHIFT = 14;
@@ -100,7 +101,8 @@ const int TAD_LIDX_SHIFT = 14;
 @property(nonatomic, retain) BlockCompressedInputStream *bis;
 @property(nonatomic, retain) NSMutableDictionary *indexDictionary;
 @property(nonatomic, retain) NSMutableArray *sequenceNames;
-- (void)readIndex;
+
+- (void)readIndexPath:(NSString *)indexPath;
 @end
 
 @implementation TabixFeatureSource {
@@ -116,7 +118,6 @@ const int TAD_LIDX_SHIFT = 14;
 @synthesize bis = _bis;
 @synthesize indexDictionary = _indexDictionary;
 @synthesize sequenceNames = _sequenceNames;
-@synthesize filePath = _path;
 
 - (void)dealloc {
 
@@ -128,19 +129,21 @@ const int TAD_LIDX_SHIFT = 14;
     [super dealloc];
 }
 
-- (id)initWithFilePath:(NSString *)filePath {
+- (id)initWithResource:(LMResource *)resource {
 
     self = [super init];
 
     if (self) {
 
-        self.filePath = filePath;
-        self.bis = [BlockCompressedInputStream streamForURL:filePath];
+        self.filePath = resource.filePath;
+        self.indexPath = resource.indexPath;
+
+        self.bis = [BlockCompressedInputStream streamForFilePath:self.filePath];
 
         // TODO -- determine codec from aPath
         self.codec = [[[BEDCodec alloc] init] autorelease];
 
-        [self readIndex];
+        [self readIndexPath:self.indexPath];
 
         double bpToByte = [self computeBasePairToByteDensity];
         if (bpToByte > 0 && bpToByte <500) {
@@ -152,6 +155,7 @@ const int TAD_LIDX_SHIFT = 14;
     }
 
     return self;
+
 }
 
 - (void)loadFeaturesForInterval:(FeatureInterval *)interval completion:(LoadFeaturesCompletion)completion {
@@ -278,11 +282,11 @@ const int TAD_LIDX_SHIFT = 14;
 *
 * @param fp File pointer
 */
-- (void)readIndex {
+- (void)readIndexPath:(NSString *)indexPath {
 
-    NSString *tabixPath = [self.filePath stringByAppendingString:@".tbi"];
+    NSString *tabixIndexPath = (indexPath) ? indexPath : [self.filePath stringByAppendingString:@".tbi"];
 
-    BlockCompressedInputStream *tabixBIS = [[BlockCompressedInputStream streamForURL:tabixPath] retain];
+    BlockCompressedInputStream *tabixBIS = [BlockCompressedInputStream streamForFilePath:tabixIndexPath];
 
     // dat - get rid of warning nag
 //    int magicNumber = [tabixBIS nextInt];  // read "TBI\1"
@@ -319,8 +323,8 @@ const int TAD_LIDX_SHIFT = 14;
         // the binning index
         int n_bin = [tabixBIS nextInt];
 
-        TabixIndex *idx = [[[TabixIndex alloc] init] autorelease];
-        [self.indexDictionary setValue:idx forKey:sequenceName];
+        TabixIndex *tabixIndex = [[[TabixIndex alloc] init] autorelease];
+        [self.indexDictionary setValue:tabixIndex forKey:sequenceName];
 
 
         for (int j = 0; j < n_bin; ++j) {
@@ -337,7 +341,7 @@ const int TAD_LIDX_SHIFT = 14;
                 [chunks addObject:chunk];
             }
             // mIndex[i].b.put(bin, chunks);
-            [idx putChunks:chunks forBin:bin];
+            [tabixIndex putChunks:chunks forBin:bin];
         }
 
         // the linear index
@@ -347,10 +351,8 @@ const int TAD_LIDX_SHIFT = 14;
             liArray[k] = [tabixBIS nextLong];
         }
 
-        [idx linearIndex:liArray length:linearIndexSize];
+        [tabixIndex linearIndex:liArray length:linearIndexSize];
     }
-
-    [tabixBIS release];
 
 }
 

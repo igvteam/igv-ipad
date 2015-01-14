@@ -491,4 +491,24 @@
     return YES;
 }
 
++ (BOOL)isUsableIndexPath:(NSString *)indexPath blurb:(NSString **)blurb {
+
+    NSString *indexPathExtension = [indexPath pathExtension];
+
+    if (![IGVHelpful isReachablePath:indexPath]) {
+
+        if (blurb) {
+            *blurb = [NSString stringWithFormat:@"%@ is unreachable", indexPath];
+        }
+
+        return NO;
+    }
+
+//    if (![IGVHelpful isSupportedPath:indexPath blurb:blurb]) {
+//        return NO;
+//    }
+
+    return YES;
+}
+
 @end

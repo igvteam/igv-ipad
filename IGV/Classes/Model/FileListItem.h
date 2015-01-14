@@ -38,15 +38,14 @@
 
 @interface FileListItem : NSObject
 
+- (id)initWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
+
 - (id)initWithFilePath:(NSString *)filePath
                  label:(NSString *)label
                 genome:(NSString *)genome
              indexPath:(NSString *)indexPath;
 
 @property(nonatomic, retain) NSString *filePath;
-
-- (id)initWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem;
-
 @property(nonatomic, retain) NSString *indexPath;
 @property(nonatomic, retain) NSString *label;
 @property(nonatomic, assign) BOOL enabled;

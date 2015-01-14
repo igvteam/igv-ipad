@@ -39,5 +39,5 @@
 #import "BaseFeatureSource.h"
 
 @interface TabixFeatureSource : BaseFeatureSource <FeatureSource>
-- (id)initWithFilePath:(NSString *)filePath;
+- (id)initWithResource:(LMResource *)resource;
 @end

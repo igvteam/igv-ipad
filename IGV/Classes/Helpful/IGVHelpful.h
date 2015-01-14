@@ -109,4 +109,5 @@ typedef void (^IGVVoidBlockType)();
 
 + (BOOL)isUsablePath:(NSString *)path blurb:(NSString **)blurb;
 
++ (BOOL)isUsableIndexPath:(NSString *)indexPath blurb:(NSString **)blurb;
 @end

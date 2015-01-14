@@ -155,10 +155,13 @@
 
     BOOL isGzipped = ([resource.filePath rangeOfString:@".gz"].location != NSNotFound);
     if (isGzipped) {
+
         // Load header for basic info on file (in particular content length)
-        HttpResponse *response = [URLDataLoader loadHeaderSynchronousWithPath:[NSString stringWithFormat:@"%@.tbi", resource.filePath]];
+        NSString *indexPath = (resource.indexPath) ? resource.indexPath : [NSString stringWithFormat:@"%@.tbi", resource.filePath];
+        HttpResponse *response = [URLDataLoader loadHeaderSynchronousWithPath:indexPath];
+
         if ([IGVHelpful isValidStatusCode:[response statusCode]]) {
-            return [[[TabixFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
+            return [[[TabixFeatureSource alloc] initWithResource:resource] autorelease];
         }
     }
 

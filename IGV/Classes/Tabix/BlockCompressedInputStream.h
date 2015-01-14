@@ -41,9 +41,9 @@
 
 @property(nonatomic, copy) NSString *path;
 
-+ (BlockCompressedInputStream *)streamForURL:(NSString *)string;
++ (BlockCompressedInputStream *)streamForFilePath:(NSString *)filePath;
 
-- (id)initForUrl:(NSString *)aUrlString;
+- (id)initWithFilePath:(NSString *)filePath;
 
 - (int)nextInt;
 
