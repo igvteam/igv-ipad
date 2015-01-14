@@ -40,6 +40,7 @@
 #import "IGVHelpful.h"
 #import "Logging.h"
 #import "Reachability.h"
+#import "CodecFactory.h"
 
 @implementation NSMutableArray (Reverse)
 
@@ -491,9 +492,7 @@
     return YES;
 }
 
-+ (BOOL)isUsableIndexPath:(NSString *)indexPath blurb:(NSString **)blurb {
-
-    NSString *indexPathExtension = [indexPath pathExtension];
++ (BOOL)isUsableIndexPath:(NSString *)indexPath blurb:(NSString **)blurb filePath:(NSString *)filePath {
 
     if (![IGVHelpful isReachablePath:indexPath]) {
 
@@ -504,9 +503,18 @@
         return NO;
     }
 
-//    if (![IGVHelpful isSupportedPath:indexPath blurb:blurb]) {
-//        return NO;
-//    }
+    NSString *indexPathExtension = [indexPath pathExtension];
+    NSString *filePathExtension = [filePath pathExtension];
+
+    NSString *codecClassString = [[CodecFactory sharedCodecFactory] codecClassStringForPath:filePath];
+    NSString* string = [NSClassFromString(codecClassString) indexFileSuffix];
+
+    if (nil == string) {
+        return NO;
+    }
+    else if (![string isEqualToString:indexPathExtension]) {
+        return NO;
+    }
 
     return YES;
 }

@@ -148,7 +148,7 @@
 
         indexPath = [indexPathTextField.text removeHeadTailWhitespace];
 
-        if (![IGVHelpful isUsableIndexPath:indexPathTextField.text blurb:&blurb]) {
+        if (![IGVHelpful isUsableIndexPath:indexPathTextField.text blurb:&blurb filePath:filePath]) {
 
             UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Error"
                                                                  message:blurb
