@@ -49,6 +49,8 @@
 @property(nonatomic, retain) IBOutlet UITextField *filePathDialogTextField;
 @property(nonatomic, retain) IBOutlet UITextField *indexPathDialogTextField;
 @property(nonatomic, retain) IBOutlet UISwitch *presentIndexPathDialog;
+@property(nonatomic) CGRect srcFrame;
+@property(nonatomic) CGRect dstFrame;
 
 - (IBAction)cancelWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
 - (IBAction)saveWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
@@ -63,6 +65,8 @@
 @synthesize filePathDialogTextField = _filePathDialogTextField;
 @synthesize indexPathDialogTextField = _indexPathDialogTextField;
 @synthesize presentIndexPathDialog = _presentIndexPathDialog;
+@synthesize srcFrame = _srcFrame;
+@synthesize dstFrame = _dstFrame;
 @synthesize delegate;
 
 - (void)dealloc {
@@ -77,6 +81,12 @@
 }
 
 #pragma mark - View lifecycle
+
+- (void)viewDidLoad {
+
+    self.dstFrame = self.srcFrame = self.labelTextField.frame;
+    self.dstFrame = CGRectMake(self.dstFrame.origin.x, self.dstFrame.origin.y + 125, self.dstFrame.size.width, self.dstFrame.size.height);
+}
 
 - (void)viewDidAppear:(BOOL)animated {
     [self.filePathDialogTextField becomeFirstResponder];
@@ -115,12 +125,7 @@
 
     ALog(@"%@ %@", [presentIndexPathDialog class], (YES == presentIndexPathDialog.on) ? @"On" : @"Off");
 
-//    const CGFloat shim = 20;
-//    CGFloat dy = shim + CGRectGetHeight(self.labelTextField.frame);
-    CGFloat dy = 79;
-
-    CGRect targetFrame = self.labelTextField.frame;
-    targetFrame.origin.y += (presentIndexPathDialog.on) ? dy : -dy;
+    CGRect targetFrame = (presentIndexPathDialog.on) ? self.dstFrame : self.srcFrame;
 
     [UIView animateWithDuration:kSquishAnimationDuration
                           delay:kSquishAnimationDelay
