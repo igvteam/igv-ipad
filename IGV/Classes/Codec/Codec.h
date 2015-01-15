@@ -44,5 +44,4 @@
 - (Feature *)decodeLine:(NSString *)line chromosome:(NSString **)chromosome error:(NSError **)error;
 + (BOOL)isSupportedPath:(NSString *)path blurb:(NSString **)blurb;
 + (NSString *)fileSuffixKey;
-+ (NSString *)indexFileSuffix;
 @end

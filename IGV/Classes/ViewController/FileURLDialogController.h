@@ -42,6 +42,7 @@
 
 @interface FileURLDialogController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate>
 @property(nonatomic, assign) id <FilePathDialogDelegate> delegate;
+
 @end
 
 @protocol FilePathDialogDelegate <NSObject>

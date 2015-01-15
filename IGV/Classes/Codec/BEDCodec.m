@@ -251,8 +251,4 @@
     return @"bed";
 }
 
-+ (NSString *)indexFileSuffix {
-    return @"idx";
-}
-
 @end

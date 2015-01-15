@@ -42,21 +42,20 @@
 #import "GenomeManager.h"
 #import "IGVHelpful.h"
 #import "TrackDelegate.h"
+#import "BEDCodec.h"
 
 @interface FileURLDialogController ()
-
 @property(nonatomic, retain) IBOutlet UITextField *labelTextField;
 @property(nonatomic, retain) IBOutlet UITextField *filePathDialogTextField;
 @property(nonatomic, retain) IBOutlet UITextField *indexPathDialogTextField;
 @property(nonatomic, retain) IBOutlet UISwitch *presentIndexPathDialog;
 @property(nonatomic) CGRect srcFrame;
 @property(nonatomic) CGRect dstFrame;
-
 - (IBAction)cancelWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
 - (IBAction)saveWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
 - (IBAction)presentIndexPathDialogHandler:(UISwitch *)presentIndexPathDialog;
-
 - (void)addFileListItemWithFilePathTextField:(UITextField *)filePathTextField labelTextField:(UITextField *)labelTextField indexPathTextField:(UITextField *)indexPathTextField;
++ (NSString *)defaultIndexPathWithFilePath:(NSString *)filePath;
 @end
 
 @implementation FileURLDialogController
@@ -84,8 +83,9 @@
 
 - (void)viewDidLoad {
 
-    self.dstFrame = self.srcFrame = self.labelTextField.frame;
-    self.dstFrame = CGRectMake(self.dstFrame.origin.x, self.dstFrame.origin.y + 125, self.dstFrame.size.width, self.dstFrame.size.height);
+    self.srcFrame = self.labelTextField.frame;
+//    self.dstFrame = CGRectMake(self.dstFrame.origin.x, self.dstFrame.origin.y + 125, self.dstFrame.size.width, self.dstFrame.size.height);
+    self.dstFrame = CGRectMake(self.srcFrame.origin.x, 230, self.srcFrame.size.width, self.srcFrame.size.height);
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -136,8 +136,25 @@
                      }
                      completion:^(BOOL finished){
 
+                         self.indexPathDialogTextField.text = (presentIndexPathDialog.on) ? [FileURLDialogController defaultIndexPathWithFilePath:self.filePathDialogTextField.text] : nil;
                          self.indexPathDialogTextField.hidden = !(presentIndexPathDialog.on);
                      }];
+
+}
+
++ (NSString *)defaultIndexPathWithFilePath:(NSString *)filePath {
+
+    NSString *filePathExtension = [filePath pathExtension];
+    NSString *indexPath = nil;
+
+    if ([[BEDCodec fileSuffixKey] isEqualToString:filePathExtension]) {
+        indexPath = [NSString stringWithFormat:@"%@.idx", filePath];
+    }
+    else if ([@"gz" isEqualToString:filePathExtension]) {
+        indexPath = [NSString stringWithFormat:@"%@.tbi", filePath];
+    }
+
+    return indexPath;
 
 }
 
@@ -183,10 +200,10 @@
 
         indexPath = [indexPathTextField.text removeHeadTailWhitespace];
 
-        if (![IGVHelpful isUsableIndexPath:indexPathTextField.text blurb:&blurb filePath:filePath]) {
+        if (![IGVHelpful isReachablePath:indexPath]) {
 
             UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                                 message:blurb
+                                                                 message:[NSString stringWithFormat:@"%@ is unreachable", indexPath]
                                                                 delegate:self
                                                        cancelButtonTitle:@"OK"
                                                        otherButtonTitles:nil] autorelease];
