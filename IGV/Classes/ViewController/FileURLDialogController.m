@@ -153,6 +153,9 @@
     else if ([@"gz" isEqualToString:filePathExtension]) {
         indexPath = [NSString stringWithFormat:@"%@.tbi", filePath];
     }
+//    else if ([@"bam" isEqualToString:filePathExtension]) {
+//        indexPath = [NSString stringWithFormat:@"%@.bai", filePath];
+//    }
 
     return indexPath;
 

@@ -43,14 +43,17 @@
 #import "AlignmentResults.h"
 #import "NSUserDefaults+LocusFileURL.h"
 #import "Coverage.h"
+#import "LMResource.h"
 #import "RefSeqTrackController.h"
 #import "GenomeManager.h"
 #import "FeatureInterval.h"
 #import "UIApplication+IGVApplication.h"
 #import "RefSeqTrackView.h"
+#import "LMResource.h"
 
 @interface BAMReader ()
-@property(nonatomic, retain) NSString *path;
+@property(nonatomic, retain) NSString *filePath;
+@property(nonatomic, copy) NSString *indexPath;
 @property(nonatomic, retain) NSLock *readLock;
 + (NSInteger)alignmentSamplingWindowSize;
 + (NSInteger)alignmentSamplingWindowDepth;
@@ -63,7 +66,7 @@
 }
 
 @synthesize chromosomeNames=_chromosomeNames;
-@synthesize path = _path;
+@synthesize filePath = _filePath;
 @synthesize chrLookupTable=_chrLookupTable;
 @synthesize readLock;
 
@@ -71,15 +74,40 @@ void bam_init_header_hash(bam_header_t *header);
 
 - (void)dealloc {
 
-    if (_index) bam_index_destroy(_index);
-    if (_samFile) samclose(_samFile);
+    if (_index) {
+        bam_index_destroy(_index);
+    }
+
+    if (_samFile) {
+        samclose(_samFile);
+    }
 
     self.chromosomeNames = nil;
-    self.path = nil;
+
+    self.filePath = nil;
+    self.indexPath = nil;
+
     self.chrLookupTable = nil;
     self.readLock = nil;
 
     [super dealloc];
+}
+
+- (id)initWithResource:(LMResource *)resource {
+
+    self = [super init];
+
+    if (nil != self) {
+
+        self.filePath = resource.filePath;
+        self.indexPath = resource.indexPath;
+
+        _index = 0;
+        _samFile = 0;
+    }
+
+    return self;
+
 }
 
 - (id)initWithPath:(NSString *)path {
@@ -88,7 +116,7 @@ void bam_init_header_hash(bam_header_t *header);
     
     if (nil != self) {
 
-        self.path = path;
+        self.filePath = path;
         _index = 0;
         _samFile = 0;
     }
@@ -243,11 +271,11 @@ void bam_init_header_hash(bam_header_t *header);
 
 - (BOOL)fetchIndexFileWithError:(NSError **)error {
 
-    _samFile = samopen([self.path UTF8String], "rb", 0);
+    _samFile = samopen([self.filePath UTF8String], "rb", 0);
 
     if (nil == _samFile) {
 
-        *error = [IGVHelpful errorWithDetailString:[NSString stringWithFormat:@"ERROR: samopen(%@) returned nil", self.path]];
+        *error = [IGVHelpful errorWithDetailString:[NSString stringWithFormat:@"ERROR: samopen(%@) returned nil", self.filePath]];
 
         ALog(@"nil == _samFile. %@", [*error localizedDescription]);
         return NO;
@@ -277,8 +305,15 @@ void bam_init_header_hash(bam_header_t *header);
 
     NSString *errorDetailString = nil;
 
-    char *remoteIndexFileURL = calloc(strlen([self.path UTF8String]) + 5, 1);
-    strcat(strcpy(remoteIndexFileURL, [self.path UTF8String]), ".bai");
+    const char *remoteIndexFileURL;
+    if (self.indexPath) {
+
+        remoteIndexFileURL = [self.indexPath UTF8String];
+    } else {
+
+        remoteIndexFileURL = calloc(strlen([self.filePath UTF8String]) + 5, 1);
+        strcat(strcpy(remoteIndexFileURL, [self.filePath UTF8String]), ".bai");
+    }
 
     knetFile *fp_remote = 0;
     uint8_t *buffer = 0;
@@ -286,7 +321,7 @@ void bam_init_header_hash(bam_header_t *header);
     fp_remote = knet_open(remoteIndexFileURL, "r");
     if (0 == fp_remote) {
 
-        errorDetailString = [NSString stringWithFormat:@"ERROR: knet_open(%@) returns 0 for BAM(%@)", [NSString stringWithUTF8String:remoteIndexFileURL], self.path];
+        errorDetailString = [NSString stringWithFormat:@"ERROR: knet_open(%@) returns 0 for BAM(%@)", [NSString stringWithUTF8String:remoteIndexFileURL], self.filePath];
         *error = [IGVHelpful errorWithDetailString:errorDetailString];
         ALog(@"0 == fp_remote. %@", [*error localizedDescription]);
 
@@ -330,7 +365,7 @@ void bam_init_header_hash(bam_header_t *header);
 
     if (0 == _index) {
 
-        errorDetailString = [NSString stringWithFormat:@"ERROR: bam_index_load_local(%@) failed for BAM(%@)", indexFilename, self.path];
+        errorDetailString = [NSString stringWithFormat:@"ERROR: bam_index_load_local(%@) failed for BAM(%@)", indexFilename, self.filePath];
         *error = [IGVHelpful errorWithDetailString:errorDetailString];
 
         ALog(@"0 == _index. %@", [*error localizedDescription]);

@@ -41,10 +41,13 @@
 @class AlignmentResults;
 @class IGVContext;
 @class FeatureInterval;
+@class LMResource;
 
 @interface  BAMReader : NSObject
+- (id)initWithResource:(LMResource *)resource;
 - (id)initWithPath:(NSString *)path;
 @property(nonatomic, retain) NSMutableArray *chromosomeNames;
 @property(nonatomic, retain) NSMutableDictionary *chrLookupTable;
+
 - (AlignmentResults *)fetchAlignmentsWithFeatureInterval:(FeatureInterval *)featureInterval error:(NSError **)error;
 @end
