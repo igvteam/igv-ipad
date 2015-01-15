@@ -308,7 +308,11 @@ void bam_init_header_hash(bam_header_t *header);
     const char *remoteIndexFileURL;
     if (self.indexPath) {
 
-        remoteIndexFileURL = [self.indexPath UTF8String];
+//        remoteIndexFileURL = [self.indexPath UTF8String];
+
+        remoteIndexFileURL = calloc(strlen([self.indexPath UTF8String]), 1);
+        strcpy(remoteIndexFileURL, [self.filePath UTF8String]);
+
     } else {
 
         remoteIndexFileURL = calloc(strlen([self.filePath UTF8String]) + 5, 1);

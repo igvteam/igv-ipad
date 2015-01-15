@@ -83,16 +83,24 @@
 
 - (void)viewDidLoad {
 
+    [super viewDidLoad];
+    
     self.srcFrame = self.labelTextField.frame;
 //    self.dstFrame = CGRectMake(self.dstFrame.origin.x, self.dstFrame.origin.y + 125, self.dstFrame.size.width, self.dstFrame.size.height);
     self.dstFrame = CGRectMake(self.srcFrame.origin.x, 230, self.srcFrame.size.width, self.srcFrame.size.height);
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    
+    [super viewDidAppear:animated];
+    
     [self.filePathDialogTextField becomeFirstResponder];
 }
 
 - (void)viewDidUnload {
+    
+    [super viewDidUnload];
+    
     self.filePathDialogTextField = nil;
     self.indexPathDialogTextField = nil;
     self.labelTextField = nil;
@@ -153,9 +161,9 @@
     else if ([@"gz" isEqualToString:filePathExtension]) {
         indexPath = [NSString stringWithFormat:@"%@.tbi", filePath];
     }
-//    else if ([@"bam" isEqualToString:filePathExtension]) {
-//        indexPath = [NSString stringWithFormat:@"%@.bai", filePath];
-//    }
+    else if ([@"bam" isEqualToString:filePathExtension]) {
+        indexPath = [NSString stringWithFormat:@"%@.bai", filePath];
+    }
 
     return indexPath;
 
