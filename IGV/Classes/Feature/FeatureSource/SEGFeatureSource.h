@@ -33,12 +33,11 @@
 
 #import "AsciiFeatureSource.h"
 @interface SEGFeatureSource : BaseFeatureSource
+
+- (id)initWithFilePath:(NSString *)filePath;
 @property(nonatomic, retain) NSDictionary *samples;
 @property(nonatomic, retain) NSData *data;
 @property(nonatomic) BOOL reverseSortOrder;
 @property(nonatomic, retain) NSMutableArray *sampleNames;
-@property(nonatomic, copy) NSString *path;
-- (id)initWithPath:(NSString *)path;
-+ (SEGFeatureSource *)featureSourceForPath:(NSString *)path;
 - (void)sortSamplesWithLocation:(long long int)location;
 @end

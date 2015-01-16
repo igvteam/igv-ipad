@@ -50,10 +50,10 @@
     STAssertEquals(resources.count, (NSUInteger) 2, @"Resources count");
 
     LMResource *resource1 = [resources objectAtIndex:0];
-    STAssertEqualObjects(resource1.path, @"http://www.broadinstitute.org/igvdata/tcga/tcgascape/120620_pipeline21/breast_invasive_adenocarcinoma.seg.gz", @"path");
+    STAssertEqualObjects(resource1.filePath, @"http://www.broadinstitute.org/igvdata/tcga/tcgascape/120620_pipeline21/breast_invasive_adenocarcinoma.seg.gz", @"path");
 
     LMResource *resource2 = [resources objectAtIndex:1];
-    STAssertEqualObjects(resource2.path, @"http://www.broadinstitute.org/igvdata/tcga/tcgascape/120620_pipeline21/sample_info.txt", @"path");
+    STAssertEqualObjects(resource2.filePath, @"http://www.broadinstitute.org/igvdata/tcga/tcgascape/120620_pipeline21/sample_info.txt", @"path");
 
 }
 

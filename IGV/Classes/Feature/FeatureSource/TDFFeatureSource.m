@@ -61,25 +61,23 @@
 @synthesize reader = _reader;
 @synthesize trackName = _trackName;
 @synthesize maxZoom = _maxZoom;
-@synthesize path = _path;
 @synthesize color = _color;
 
 - (void)dealloc {
 
     self.reader = nil;
     self.trackName = nil;
-    self.path = nil;
     self.color = nil;
 
     [super dealloc];
 }
 
-- (id)initWithPath:(NSString *)path {
+- (id)initWithFilePath:(NSString *)filePath {
 
     self = [super init];
 
     if (nil != self) {
-        self.path = path;
+        self.filePath = filePath;
         self.featureCache = [[[FeatureCache alloc] initWithZoomOption:YES] autorelease];
     }
 
@@ -92,7 +90,7 @@
 
     if (nil != self) {
         self.color = resource.color;
-        self.path = resource.path;
+        self.filePath = resource.filePath;
         self.featureCache = [[[FeatureCache alloc] initWithZoomOption:YES] autorelease];
     }
 
@@ -103,7 +101,7 @@
 
     if (nil == self.reader) {
 
-        self.reader = [[[TDFReader alloc] initWithPath:self.path completion:^(HttpResponse *response) {
+        self.reader = [[[TDFReader alloc] initWithPath:self.filePath completion:^(HttpResponse *response) {
 
             if ([IGVHelpful errorDetected:response.error]) {
 
@@ -128,7 +126,7 @@
             [self selfParseGroupAttributes:[TDFGroup tdfGroupWithName:@"/" data:response.receivedData]];
 
             // Try again.  TODO - What prevents an infinite loop?
-            [self _loadFeaturesForInterval:featureInterval completion: completion];
+            [self _loadFeaturesForInterval:featureInterval completion:completion];
 
         }] autorelease];
 
@@ -252,7 +250,7 @@
 
 - (NSString *)description {
 
-    return [NSString stringWithFormat:@"%@. %@. path %@.", [self class], [self.reader class], self.path];
+    return [NSString stringWithFormat:@"%@. %@. path %@.", [self class], [self.reader class], self.filePath];
 }
 
 @end

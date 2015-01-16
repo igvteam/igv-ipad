@@ -46,7 +46,7 @@
     NSMutableSet *bam = [NSMutableSet set];
     for (LMResource *resource in self) {
 
-        if ([[resource.path pathExtension] isEqualToString:@"bam"]) {
+        if ([[resource.filePath pathExtension] isEqualToString:@"bam"]) {
             [bam addObject:resource];
         }
 
@@ -57,30 +57,31 @@
 @end
 
 @interface LMResource ()
-@property(nonatomic, retain) FileListItem *fileListItem;
 - (id)initWithElement:(SMXMLElement *)element;
-
-- (NSString *)resourceNameWithString:(NSString *)string path:(NSString *)path;
-
 - (id)initWithFileListItem:(FileListItem *)fileListItem;
-- (id)initWithName:(NSString *)name path:(NSString *)path;
+
+- (id)initWithName:(NSString *)name filePath:(NSString *)filePath indexPath:(NSString *)indexPath;
+- (NSString *)resourceNameWithString:(NSString *)string filePath:(NSString *)filePath;
 @end
 
 @implementation LMResource
 
 @synthesize name = _name;
-@synthesize path = _path;
+@synthesize filePath = _filePath;
+@synthesize indexPath = _indexPath;
+@synthesize enabled = _enabled;
+
 @synthesize trackLine = _trackLine;
 @synthesize color = _color;
-@synthesize enabled = _enabled;
-@synthesize fileListItem = _fileListItem;
 
 - (void)dealloc {
+
     self.name = nil;
-    self.path = nil;
+    self.indexPath = nil;
+    self.filePath = nil;
+
     self.trackLine = nil;
     self.color = nil;
-    self.fileListItem = nil;
 
     [super dealloc];
 }
@@ -92,12 +93,12 @@
     if (nil != self) {
 
         self.enabled = NO;
-        self.path = [element attributeNamed:@"path"];
-        self.name = [self resourceNameWithString:[element attributeNamed:@"name"] path:[element attributeNamed:@"path"]];
+        self.filePath = [element attributeNamed:@"path"];
+        self.name = [self resourceNameWithString:[element attributeNamed:@"name"] filePath:[element attributeNamed:@"path"]];
 
         // For old version 1 formats
-        if(nil == self.path) {
-            self.path = self.name;
+        if(nil == self.filePath) {
+            self.filePath = self.name;
         }
 
         self.color = [IGVHelpful colorWithCommaSeparateRGBString:[element attributeNamed:@"color"]];
@@ -114,34 +115,35 @@
     if (nil != self) {
         
         self.enabled = fileListItem.enabled;
-        self.fileListItem = fileListItem;
-        self.name = [self resourceNameWithString:fileListItem.label path:fileListItem.path];
-        self.path = fileListItem.path;
+        self.name = [self resourceNameWithString:fileListItem.label filePath:fileListItem.filePath];
+        self.filePath = fileListItem.filePath;
+        self.indexPath = fileListItem.indexPath;
     }
 
     return self;
 }
 
-- (id)initWithName:(NSString *)name path:(NSString *)path {
+- (id)initWithName:(NSString *)name filePath:(NSString *)filePath indexPath:(NSString *)indexPath {
 
     self = [super init];
     if (nil != self) {
 
-        self.path = path;
+        self.filePath = filePath;
+        self.indexPath = indexPath;
         self.enabled = NO;
-        self.name = [self resourceNameWithString:name path:path];
+        self.name = [self resourceNameWithString:name filePath:filePath];
     }
 
     return self;
 }
 
-- (NSString *)resourceNameWithString:(NSString *)string path:(NSString *)path {
-    return ([string isEqualToString:@""] || nil == string) ? [self defaultNameWithPath:path] : string;
+- (NSString *)resourceNameWithString:(NSString *)string filePath:(NSString *)filePath {
+    return ([string isEqualToString:@""] || nil == string) ? [self defaultNameWithFilePath:filePath] : string;
 }
 
-- (NSString *)defaultNameWithPath:(NSString *)path {
+- (NSString *)defaultNameWithFilePath:(NSString *)filePath {
 
-    NSArray *parts = [path componentsSeparatedByString:@"/"];
+    NSArray *parts = [filePath componentsSeparatedByString:@"/"];
     NSString *defaultName = [parts objectAtIndex:([parts count] - 1)];
 
     return defaultName;
@@ -149,27 +151,27 @@
 
 - (NSString *)tableViewCellPath {
 
-    NSArray *parts = [self.path componentsSeparatedByString:@"://"];
+    NSArray *parts = [self.filePath componentsSeparatedByString:@"://"];
     NSString *str = [parts objectAtIndex:([parts count] - 1)];
 
     return str;
 }
 
-- (void)setEnabled:(BOOL)enabled {
-
-    _enabled = enabled;
-    if (nil != self.fileListItem) {
-        self.fileListItem.enabled = enabled;
-    }
-
-}
+//- (void)setEnabled:(BOOL)enabled {
+//
+//    _enabled = enabled;
+//    if (nil != self.fileListItem) {
+//        self.fileListItem.enabled = enabled;
+//    }
+//
+//}
 
 + (id)resourceWithFileListItem:(FileListItem *)fileListItem {
     return [[[LMResource alloc] initWithFileListItem:fileListItem] autorelease];
 }
 
-+ (id)resourceWithName:(NSString *)name path:(NSString *)path {
-    return [[[LMResource alloc] initWithName:name path:path] autorelease];
++ (id)resourceWithName:(NSString *)name filePath:(NSString *)filePath indexPath:(NSString *)indexPath {
+    return [[[LMResource alloc] initWithName:name filePath:filePath indexPath:indexPath] autorelease];
 }
 
 + (id)resourceWithElement:(SMXMLElement *)element {
@@ -178,7 +180,7 @@
 
 - (NSString *)description {
 
-    return [NSString stringWithFormat:@"%@. enabled %@. color %@. name %@. path %@", [self class], self.enabled ? @"YES" : @"NO", self.color, self.name, self.path];
+    return [NSString stringWithFormat:@"%@. enabled %@. color %@. name %@. path %@", [self class], self.enabled ? @"YES" : @"NO", self.color, self.name, self.filePath];
 //    return [NSString stringWithFormat:@"%@ name %@ path %@", [self class], self.name, self.path];
 }
 

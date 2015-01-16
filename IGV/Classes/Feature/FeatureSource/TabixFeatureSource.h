@@ -38,12 +38,6 @@
 #import "FeatureSource.h"
 #import "BaseFeatureSource.h"
 
-@class Codec;
-@class FeatureInterval;
-
-
 @interface TabixFeatureSource : BaseFeatureSource <FeatureSource>
-
-- (id)initWithPath:(NSString *)path;
-
+- (id)initWithResource:(LMResource *)resource;
 @end

@@ -428,7 +428,7 @@ NSTimeInterval const kScreenShotRevealDuration = 1.0/8.0;
     NSMutableArray *uniqueResources = [NSMutableArray array];
     for (LMResource *resource in resources) {
 
-        if (nil != [self.trackControllers objectForKey:resource.path]) {
+        if (nil != [self.trackControllers objectForKey:resource.filePath]) {
             ALog(@"Ignore attempted add of duplicate track %@", resource);
         } else {
             [uniqueResources addObject:resource];
@@ -505,7 +505,7 @@ NSTimeInterval const kScreenShotRevealDuration = 1.0/8.0;
             bamTrackController.appLaunchLocusCentroid = appLaunchLocusCentroid;
 
 
-            [self.trackControllers setObject:bamTrackController forKey:resource.path];
+            [self.trackControllers setObject:bamTrackController forKey:resource.filePath];
 
         } else {
 
@@ -525,7 +525,7 @@ NSTimeInterval const kScreenShotRevealDuration = 1.0/8.0;
             featureTrack.featureSource = featureSource;
             TrackController *trackController = [[[TrackController alloc] initWithTrack:featureTrack] autorelease];
 
-            [self.trackControllers setObject:trackController forKey:resource.path];
+            [self.trackControllers setObject:trackController forKey:resource.filePath];
 
         }
     }
@@ -540,11 +540,11 @@ NSTimeInterval const kScreenShotRevealDuration = 1.0/8.0;
 
 - (void)discardTrackWithResource:(LMResource *)resource {
 
-    TrackController *trackController = [self.trackControllers objectForKey:resource.path];
+    TrackController *trackController = [self.trackControllers objectForKey:resource.filePath];
 
     TrackView *track = [self.trackContainerScrollView trackWithTrackController:trackController];
 
-    [self.trackControllers removeObjectForKey:resource.path];
+    [self.trackControllers removeObjectForKey:resource.filePath];
 
     [self.trackContainerScrollView discardTrack:track];
 
@@ -890,7 +890,7 @@ NSTimeInterval const kScreenShotRevealDuration = 1.0/8.0;
 
         NSDictionary *genomeStub = [genomeManager currentGenomeStub];
 
-        LMResource *resource = (nil == [genomeStub objectForKey:@"sequenceLocation"]) ? nil : [LMResource resourceWithName:nil path:[genomeStub objectForKey:@"sequenceLocation"]];
+        LMResource *resource = (nil == [genomeStub objectForKey:@"sequenceLocation"]) ? nil : [LMResource resourceWithName:nil filePath:[genomeStub objectForKey:@"sequenceLocation"] indexPath:nil];
 
         self.refSeqTrack.resource = resource;
         self.refSeqTrack.featureList = [[[RefSeqFeatureList alloc] init] autorelease];
@@ -951,8 +951,7 @@ NSTimeInterval const kScreenShotRevealDuration = 1.0/8.0;
     NSDictionary *genomeStub = [genomeManager currentGenomeStub];
     if (nil != [genomeStub objectForKey:kGeneFileKey]) {
 
-        LMResource *resource = [LMResource resourceWithName:kGeneTrackName
-                                                       path:[genomeStub objectForKey:kGeneFileKey]];
+        LMResource *resource = [LMResource resourceWithName:kGeneTrackName filePath:[genomeStub objectForKey:kGeneFileKey] indexPath:nil];
 
 
         BaseFeatureSource *featureSource = [BaseFeatureSource featureSourceWithResource:resource];
@@ -973,7 +972,7 @@ NSTimeInterval const kScreenShotRevealDuration = 1.0/8.0;
 
         if (nil != geneTrackController) {
             self.trackContainerScrollView.geneTrack = geneTrackController.track;
-            [self.trackControllers setObject:geneTrackController forKey:resource.path];
+            [self.trackControllers setObject:geneTrackController forKey:resource.filePath];
         }
     }
 

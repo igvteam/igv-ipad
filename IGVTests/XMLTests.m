@@ -116,7 +116,7 @@
     LMResource *firstResource = [child1.resources objectAtIndex:0];
 
     STAssertEqualObjects(firstResource.name, @"GM12878 Input", @"First resource name");
-    STAssertEqualObjects(firstResource.path, @"http://www.broadinstitute.org/igvdata/encode/hg18/broadHistone/SignalGm12878Control.tdf", @"First resource path");
+    STAssertEqualObjects(firstResource.filePath, @"http://www.broadinstitute.org/igvdata/encode/hg18/broadHistone/SignalGm12878Control.tdf", @"First resource path");
 
 }
 

@@ -40,6 +40,6 @@
 
 @class FileListTableViewCell;
 
-@interface MyTracksController : UITableViewController  <FileURLDialogDelegate>
+@interface MyTracksController : UITableViewController  <FilePathDialogDelegate>
 - (IBAction)enableTrackWithFileListTableViewCell:(FileListTableViewCell *)fileListTableViewCell;
 @end

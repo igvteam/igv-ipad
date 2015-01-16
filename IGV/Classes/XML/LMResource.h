@@ -45,13 +45,17 @@
 
 @interface LMResource : NSObject
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *path;
+@property (nonatomic, copy) NSString *filePath;
+@property (nonatomic, copy) NSString *indexPath;
+@property (nonatomic) BOOL enabled;
+
 @property (nonatomic, copy) NSString *trackLine;
 @property (nonatomic, retain) UIColor *color;
-@property (nonatomic) BOOL enabled;
-- (NSString *)defaultNameWithPath:(NSString *)path;
+
+- (NSString *)defaultNameWithFilePath:(NSString *)filePath;
 - (NSString *)tableViewCellPath;
+
 + (id)resourceWithFileListItem:(FileListItem *)fileListItem;
-+ (id)resourceWithName:(NSString *)name path:(NSString *)path;
++ (id)resourceWithName:(NSString *)name filePath:(NSString *)filePath indexPath:(NSString *)indexPath;
 + (id)resourceWithElement:(SMXMLElement*) element;
 @end

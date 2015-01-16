@@ -64,7 +64,7 @@
 
 + (NSString *)fileSuffixKey {
     ALog(@"%@ does not implement this method", [self class]);
-     return nil;
+    return nil;
 }
 
 @end

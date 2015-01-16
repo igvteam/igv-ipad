@@ -199,7 +199,8 @@
 
         NSMutableArray *resources = [NSMutableArray array];
         for (NSDictionary *track in tracks) {
-            LMResource *resource = [LMResource resourceWithName:[track objectForKey:@"name"] path:[track objectForKey:@"path"]];
+
+            LMResource *resource = [LMResource resourceWithName:[track objectForKey:@"name"] filePath:[track objectForKey:@"path"] indexPath:[track objectForKey:@"indexPath"]];
             resource.color = ([track objectForKey:@"color"]) ? [UIColor colorWithRGBArray:[track objectForKey:@"color"]] : nil;
             [resources addObject:resource];
         }
@@ -251,7 +252,10 @@
             }
 
             [track setObject:trackView.trackLabel.text forKey:@"name"];
-            [track setObject:trackView.resource.path forKey:@"path"];
+            [track setObject:trackView.resource.filePath forKey:@"path"];
+            if (trackView.resource.indexPath) {
+                [track setObject:trackView.resource.indexPath forKey:@"indexPath"];
+            }
             [track setObject:[NSNumber numberWithUnsignedInteger:[tracksInScreenLayoutOrder indexOfObject:trackView]] forKey:@"index"];
 
             [tracks insertObject:track atIndex:0];

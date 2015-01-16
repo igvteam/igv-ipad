@@ -55,12 +55,16 @@
 @synthesize trackProperties = _trackProperties;
 @synthesize chrTable = _chrTable;
 @synthesize featureCache = _featureCache;
+@synthesize filePath = _filePath;
+@synthesize indexPath = _indexPath;
 
 - (void)dealloc {
 
     self.trackProperties = nil;
     self.chrTable = nil;
     self.featureCache = nil;
+    self.filePath = nil;
+    self.indexPath = nil;
 
     [super dealloc];
 }
@@ -142,39 +146,40 @@
 
 + (BaseFeatureSource *)featureSourceWithResource:(LMResource *)resource {
 
-    NSString *path = [[resource.path lowercaseString] stringByReplacingOccurrencesOfString:@".gz" withString:@""];
+    NSString *path = [[resource.filePath lowercaseString] stringByReplacingOccurrencesOfString:@".gz" withString:@""];
     NSString *pathExtension = [path pathExtension];
 
     if ([pathExtension isEqualToString:@"tdf"]) {
         return [[[TDFFeatureSource alloc] initWithResource:resource] autorelease];
     }
 
-    BOOL isGzipped = ([resource.path rangeOfString:@".gz"].location != NSNotFound);
+    BOOL isGzipped = ([resource.filePath rangeOfString:@".gz"].location != NSNotFound);
     if (isGzipped) {
+
         // Load header for basic info on file (in particular content length)
-        HttpResponse *response = [URLDataLoader loadHeaderSynchronousWithPath:[NSString stringWithFormat:@"%@.tbi", resource.path]];
+        NSString *indexPath = (resource.indexPath) ? resource.indexPath : [NSString stringWithFormat:@"%@.tbi", resource.filePath];
+        HttpResponse *response = [URLDataLoader loadHeaderSynchronousWithPath:indexPath];
+
         if ([IGVHelpful isValidStatusCode:[response statusCode]]) {
-            return [[[TabixFeatureSource alloc] initWithPath:resource.path] autorelease];
+            return [[[TabixFeatureSource alloc] initWithResource:resource] autorelease];
         }
     }
 
     if ([pathExtension isEqualToString:@"seg"]) {
-
-        return [[[SEGFeatureSource alloc] initWithPath:resource.path] autorelease];
+        return [[[SEGFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
     }
 
     if ([pathExtension isEqualToString:@"bw"] || [pathExtension isEqualToString:@"bigwig"]) {
-
-        return [[[BWFeatureSource alloc] initWithPath:resource.path] autorelease];
+        return [[[BWFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
     }
 
     if ([pathExtension isEqualToString:@"bb"] || [pathExtension isEqualToString:@"bigbed"]) {
-
-        return [[[BWFeatureSource alloc] initWithPath:resource.path] autorelease];
+        return [[[BWFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
     }
 
     // Default -- we really should check extensions here to be sure we can handle it
-    return [[[AsciiFeatureSource alloc] initWithPath:resource.path] autorelease];
+//    return [[[AsciiFeatureSource alloc] initWithFilePath:resource.filePath] autorelease];
+    return [[[AsciiFeatureSource alloc] initWithResource:resource] autorelease];
 
 }
 

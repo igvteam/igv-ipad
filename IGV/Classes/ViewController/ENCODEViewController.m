@@ -244,7 +244,7 @@
             continue;
         }
 
-        [resources addObject:[LMResource resourceWithName:[ENCODEViewController trackLabelWithENCODEItem:enabledENCODEItem] path:enabledENCODEItem.path]];
+        [resources addObject:[LMResource resourceWithName:[ENCODEViewController trackLabelWithENCODEItem:enabledENCODEItem] filePath:enabledENCODEItem.path indexPath:nil]];
     }
 
     RootContentController *rootContentController = [UIApplication sharedRootContentController];

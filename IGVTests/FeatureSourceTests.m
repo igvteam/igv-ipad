@@ -60,7 +60,7 @@
 //    NSString *path = @"https://dl.dropboxusercontent.com/u/11270323/BroadInstitute/dataFormats/WIG/heart.SLC25A3.wig";
     NSString *path = @"https://dl.dropboxusercontent.com/u/11270323/BroadInstitute/dataFormats/Peak/wgEncodeBroadHistoneGm12878CtcfStdPk.peak";
 
-    BaseFeatureSource *featureSource = [BaseFeatureSource featureSourceWithResource:[LMResource resourceWithName:nil path:path]];
+    BaseFeatureSource *featureSource = [BaseFeatureSource featureSourceWithResource:[LMResource resourceWithName:nil filePath:path indexPath:nil]];
     STAssertNotNil(featureSource, nil);
 
     ALog(@"%@", [featureSource description]);
@@ -108,7 +108,7 @@
 
     NSString *path = @"http://www.broadinstitute.org/igvdata/ipad/hg18_tabix_genes.bed.gz";
 
-    LMResource *resource = [LMResource resourceWithName:nil path:path];
+    LMResource *resource = [LMResource resourceWithName:nil filePath:path indexPath:nil];
 
     BaseFeatureSource *featureSource = [BaseFeatureSource featureSourceWithResource:resource];
     STAssertNotNil(featureSource, nil);
@@ -138,7 +138,7 @@
 
 //    NSString *path = @"http://www.broadinstitute.org/igvdata/encode/hg18/broadHistone/SignalGm12878Ctcf.tdf";
     NSString *path = @"http://www.broadinstitute.org/igvdata/encode/hg19/broadHistone/wgEncodeBroadHistoneGm12878ControlStdSig.wig.tdf";
-    BaseFeatureSource *baseFeatureSource = [BaseFeatureSource featureSourceWithResource:[LMResource resourceWithName:nil path:path]];
+    BaseFeatureSource *baseFeatureSource = [BaseFeatureSource featureSourceWithResource:[LMResource resourceWithName:nil filePath:path indexPath:nil]];
     STAssertNotNil(baseFeatureSource, nil);
 
 //    FeatureInterval *featureInterval = [FeatureInterval intervalWithChromosomeName:@"16" start:0 end:88827254];
@@ -146,7 +146,7 @@
     STAssertNotNil(featureInterval, nil);
 
     TDFFeatureSource *tdfFeatureSource = (TDFFeatureSource *) baseFeatureSource;
-    tdfFeatureSource.reader = [[[TDFReader alloc] initWithPath:tdfFeatureSource.path completion:^(HttpResponse *response) {
+    tdfFeatureSource.reader = [[[TDFReader alloc] initWithPath:tdfFeatureSource.filePath completion:^(HttpResponse *response) {
 
         tdfFeatureSource.trackName = [tdfFeatureSource.reader.trackNames objectAtIndex:0];
 
@@ -193,7 +193,7 @@
 //    NSString *path = @"http://www.broadinstitute.org/igvdata/Tumorscape/gz/Esophageal%20adenocarcinoma.seg.gz";
 //    NSString *path = @"http://www.broadinstitute.org/igvdata/tcga/gbmsubtypes/Broad.080528.subtypes.seg.gz";
 
-    BaseFeatureSource *featureSource = [BaseFeatureSource featureSourceWithResource:[LMResource resourceWithName:nil path:path]];
+    BaseFeatureSource *featureSource = [BaseFeatureSource featureSourceWithResource:[LMResource resourceWithName:nil filePath:path indexPath:nil]];
     STAssertNotNil(featureSource, nil);
 
     NSArray *chromosomeExtent = [[GenomeManager sharedGenomeManager] chromosomeExtentWithChromosomeName:@"1"];
@@ -218,40 +218,41 @@
 
 }
 
-- (void)testIndexedFileFromGenomeSpace {
-
-    NSString *path = @"https://dm.genomespace.org/datamanager/file/Home/igvtest/ipad/hg18_refseq_genes.bed";
-    AsciiFeatureSource *featureSource = [AsciiFeatureSource featureSourceForPath:path];
-    STAssertNotNil(featureSource, nil);
-
-    // Load MUC1 locus  chr1:153,424,471-153,429,914
-    FeatureInterval *interval = [FeatureInterval intervalWithChromosomeName:@"1" start:153424471 end:153429914];
-
-    __block BOOL waitingForBlock = YES;
-
-    [featureSource loadFeaturesForInterval:interval completion:^() {
-        waitingForBlock = NO;
-    }];
-
-    while (waitingForBlock) {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
-                                 beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
-    }
-
-    FeatureList *featureList = [featureSource featuresForFeatureInterval:interval];
-    STAssertNotNil(featureList, nil);
-
-    NSArray *features = featureList.features;
-    BOOL found = NO;
-    for (LabeledFeature *feature in features) {
-        if ([feature.label isEqualToString:@"MUC1"]) {
-            found = YES;
-            break;
-        }
-    }
-
-    STAssertTrue(found, @"MUC1 found");
-
-}
+//- (void)testIndexedFileFromGenomeSpace {
+//
+//    NSString *path = @"https://dm.genomespace.org/datamanager/file/Home/igvtest/ipad/hg18_refseq_genes.bed";
+//    AsciiFeatureSource *featureSource = [AsciiFeatureSource featureSourceForPath:path];
+//    STAssertNotNil(featureSource, nil);
+//
+//    // Load MUC1 locus  chr1:153,424,471-153,429,914
+//    FeatureInterval *interval = [FeatureInterval intervalWithChromosomeName:@"1" start:153424471 end:153429914];
+//    STAssertNotNil(featureSource, nil);
+//
+//    __block BOOL waitingForBlock = YES;
+//
+//    [featureSource loadFeaturesForInterval:interval completion:^() {
+//        waitingForBlock = NO;
+//    }];
+//
+//    while (waitingForBlock) {
+//        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+//                                 beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+//    }
+//
+//    FeatureList *featureList = [featureSource featuresForFeatureInterval:interval];
+//    STAssertNotNil(featureList, nil);
+//
+//    NSArray *features = featureList.features;
+//    BOOL found = NO;
+//    for (LabeledFeature *feature in features) {
+//        if ([feature.label isEqualToString:@"MUC1"]) {
+//            found = YES;
+//            break;
+//        }
+//    }
+//
+//    STAssertTrue(found, @"MUC1 found");
+//
+//}
 
 @end

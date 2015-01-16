@@ -43,13 +43,8 @@
 
 
 @interface BWFeatureSource : BaseFeatureSource <FeatureSource>
-
+- (id)initWithFilePath:(NSString *)filePath;
 @property(nonatomic, retain) BWReader *reader;
-@property(nonatomic, copy) NSString *path;
-
-
-- (id)initWithPath:(NSString *)aURLString;
-
 - (BWZoomLevelHeader *)zoomLevelForScale:(double)bpPerPixel;
 
 @end

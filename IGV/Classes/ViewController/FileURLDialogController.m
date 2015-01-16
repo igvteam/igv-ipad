@@ -41,21 +41,39 @@
 #import "NSString+FileURLAndLocusParsing.h"
 #import "GenomeManager.h"
 #import "IGVHelpful.h"
+#import "TrackDelegate.h"
+#import "BEDCodec.h"
 
 @interface FileURLDialogController ()
-- (void)addFileListItemWithFileURLTextField:(UITextField *)fileURLTextField labelTextField:(UITextField *)labelTextField;
+@property(nonatomic, retain) IBOutlet UITextField *labelTextField;
+@property(nonatomic, retain) IBOutlet UITextField *filePathDialogTextField;
+@property(nonatomic, retain) IBOutlet UITextField *indexPathDialogTextField;
+@property(nonatomic, retain) IBOutlet UISwitch *presentIndexPathDialog;
+@property(nonatomic) CGRect srcFrame;
+@property(nonatomic) CGRect dstFrame;
+- (IBAction)cancelWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
+- (IBAction)saveWithBarButtonItem:(UIBarButtonItem *)barButtonItem;
+- (IBAction)presentIndexPathDialogHandler:(UISwitch *)presentIndexPathDialog;
+- (void)addFileListItemWithFilePathTextField:(UITextField *)filePathTextField labelTextField:(UITextField *)labelTextField indexPathTextField:(UITextField *)indexPathTextField;
++ (NSString *)defaultIndexPathWithFilePath:(NSString *)filePath;
 @end
 
 @implementation FileURLDialogController
 
 @synthesize labelTextField = _labelTextField;
-@synthesize fileURLDialogTextField = _fileURLDialogTextField;
+@synthesize filePathDialogTextField = _filePathDialogTextField;
+@synthesize indexPathDialogTextField = _indexPathDialogTextField;
+@synthesize presentIndexPathDialog = _presentIndexPathDialog;
+@synthesize srcFrame = _srcFrame;
+@synthesize dstFrame = _dstFrame;
 @synthesize delegate;
 
 - (void)dealloc {
 
+    self.filePathDialogTextField = nil;
+    self.indexPathDialogTextField = nil;
+    self.presentIndexPathDialog = nil;
     self.labelTextField = nil;
-    self.fileURLDialogTextField = nil;
     self.delegate = nil;
 
     [super dealloc];
@@ -63,12 +81,29 @@
 
 #pragma mark - View lifecycle
 
+- (void)viewDidLoad {
+
+    [super viewDidLoad];
+    
+    self.srcFrame = self.labelTextField.frame;
+//    self.dstFrame = CGRectMake(self.dstFrame.origin.x, self.dstFrame.origin.y + 125, self.dstFrame.size.width, self.dstFrame.size.height);
+    self.dstFrame = CGRectMake(self.srcFrame.origin.x, 230, self.srcFrame.size.width, self.srcFrame.size.height);
+}
+
 - (void)viewDidAppear:(BOOL)animated {
-    [self.fileURLDialogTextField becomeFirstResponder];
+    
+    [super viewDidAppear:animated];
+    
+    [self.filePathDialogTextField becomeFirstResponder];
 }
 
 - (void)viewDidUnload {
-    self.fileURLDialogTextField = nil;
+    
+    [super viewDidUnload];
+    
+    self.filePathDialogTextField = nil;
+    self.indexPathDialogTextField = nil;
+    self.labelTextField = nil;
 }
 
 #pragma mark - UITextFieldDelegate Methods
@@ -76,8 +111,9 @@
 - (void)cancelWithBarButtonItem:(UIBarButtonItem *)barButtonItem {
     
     [self.labelTextField resignFirstResponder];
-    [self.fileURLDialogTextField resignFirstResponder];
-    
+    [self.filePathDialogTextField resignFirstResponder];
+    [self.indexPathDialogTextField resignFirstResponder];
+
     [self.delegate fileURLDialogController:self addFileListItem:nil];
 
 }
@@ -87,32 +123,77 @@
 }
 
 - (void)saveWithBarButtonItem:(UIBarButtonItem *)barButtonItem {
-    [self addFileListItemWithFileURLTextField:self.fileURLDialogTextField labelTextField:self.labelTextField];
+    [self addFileListItemWithFilePathTextField:self.filePathDialogTextField
+                                labelTextField:self.labelTextField
+                            indexPathTextField:self.indexPathDialogTextField];
+
+}
+
+- (IBAction)presentIndexPathDialogHandler:(UISwitch *)presentIndexPathDialog {
+
+    ALog(@"%@ %@", [presentIndexPathDialog class], (YES == presentIndexPathDialog.on) ? @"On" : @"Off");
+
+    CGRect targetFrame = (presentIndexPathDialog.on) ? self.dstFrame : self.srcFrame;
+
+    [UIView animateWithDuration:kSquishAnimationDuration
+                          delay:kSquishAnimationDelay
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+
+                         self.labelTextField.frame = targetFrame;
+                     }
+                     completion:^(BOOL finished){
+
+                         self.indexPathDialogTextField.text = (presentIndexPathDialog.on) ? [FileURLDialogController defaultIndexPathWithFilePath:self.filePathDialogTextField.text] : nil;
+                         self.indexPathDialogTextField.hidden = !(presentIndexPathDialog.on);
+                     }];
+
+}
+
++ (NSString *)defaultIndexPathWithFilePath:(NSString *)filePath {
+
+    NSString *filePathExtension = [filePath pathExtension];
+    NSString *indexPath = nil;
+
+    if ([[BEDCodec fileSuffixKey] isEqualToString:filePathExtension]) {
+        indexPath = [NSString stringWithFormat:@"%@.idx", filePath];
+    }
+    else if ([@"gz" isEqualToString:filePathExtension]) {
+        indexPath = [NSString stringWithFormat:@"%@.tbi", filePath];
+    }
+    else if ([@"bam" isEqualToString:filePathExtension]) {
+        indexPath = [NSString stringWithFormat:@"%@.bai", filePath];
+    }
+
+    return indexPath;
 
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 
-    [self addFileListItemWithFileURLTextField:self.fileURLDialogTextField labelTextField:self.labelTextField];
+    [self addFileListItemWithFilePathTextField:self.filePathDialogTextField
+                                labelTextField:self.labelTextField
+                            indexPathTextField:self.indexPathDialogTextField];
 
     return YES;
 }
 
-- (void)addFileListItemWithFileURLTextField:(UITextField *)fileURLTextField labelTextField:(UITextField *)labelTextField {
+- (void)addFileListItemWithFilePathTextField:(UITextField *)filePathTextField
+                              labelTextField:(UITextField *)labelTextField
+                          indexPathTextField:(UITextField *)indexPathTextField {
 
-    BOOL noFileURLString = (nil == fileURLTextField.text || [@"" isEqualToString:fileURLTextField.text]);
+    BOOL filePathIsAbsent  = (nil ==  filePathTextField.text || [@"" isEqualToString: filePathTextField.text]);
+    BOOL indexPathIsAbsent = (nil == indexPathTextField.text || [@"" isEqualToString:indexPathTextField.text]);
 
-    if (noFileURLString) {
-
+    if (filePathIsAbsent) {
         [self.delegate fileURLDialogController:self addFileListItem:nil];
         return;
     }
 
-
-    NSString *path = [fileURLTextField.text removeHeadTailWhitespace];
+    NSString *filePath = [filePathTextField.text removeHeadTailWhitespace];
 
     NSString *blurb = nil;
-    if (![IGVHelpful isUsablePath:path blurb:&blurb]) {
+    if (![IGVHelpful isUsablePath:filePath blurb:&blurb]) {
 
         UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Error"
                                                              message:blurb
@@ -125,14 +206,36 @@
         return;
     }
 
-    NSString *label = (nil == labelTextField.text) ? [FileListItem defaultLabelWithPath:path] : labelTextField.text;
+    NSString *indexPath = nil;
+    if (!indexPathIsAbsent) {
 
-    FileListItem *fileListItem = [[[FileListItem alloc] initWithPath:path
-                                                               label:label
-                                                              genome:[GenomeManager sharedGenomeManager].currentGenomeName] autorelease];
+        indexPath = [indexPathTextField.text removeHeadTailWhitespace];
+
+        if (![IGVHelpful isReachablePath:indexPath]) {
+
+            UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                                 message:[NSString stringWithFormat:@"%@ is unreachable", indexPath]
+                                                                delegate:self
+                                                       cancelButtonTitle:@"OK"
+                                                       otherButtonTitles:nil] autorelease];
+
+            [alertView show];
+
+            return;
+        }
+
+    }
+
+    NSString *label = (nil == labelTextField.text) ? [FileListItem defaultLabelWithFilePath:filePath] : labelTextField.text;
+
+    FileListItem *fileListItem = [[[FileListItem alloc] initWithFilePath:filePath
+                                                                   label:label
+                                                                  genome:[GenomeManager sharedGenomeManager].currentGenomeName
+                                                               indexPath:indexPath] autorelease];
 
     [self.labelTextField resignFirstResponder];
-    [self.fileURLDialogTextField resignFirstResponder];
+    [self.filePathDialogTextField resignFirstResponder];
+    [self.indexPathDialogTextField resignFirstResponder];
 
     [self.delegate fileURLDialogController:self addFileListItem:fileListItem];
 

@@ -95,16 +95,14 @@
 
     for (NSDictionary *fileListDefaultsItem in filesListDefaults) {
 
-        NSString *genome    = [FileListItem genomeWithFileListDefaultsItem:fileListDefaultsItem];
-        NSString *urlString = [FileListItem urlStringWithFileListDefaultsItem:fileListDefaultsItem];
-        NSString *label     = [FileListItem labelWithFileListDefaultsItem:fileListDefaultsItem];
+        NSString *genome = [FileListItem genomeWithFileListDefaultsItem:fileListDefaultsItem];
 
         if (nil == [self.urlList objectForKey:genome]) {
             [self.urlList setObject:[NSMutableArray array] forKey:genome];
         }
 
         NSMutableArray *fileListItems = [self.urlList objectForKey:genome];
-        [fileListItems addObject:[[[FileListItem alloc] initWithPath:urlString label:label genome:genome] autorelease]];
+        [fileListItems addObject:[[[FileListItem alloc] initWithFileListDefaultsItem:fileListDefaultsItem] autorelease]];
 
     }
 
@@ -148,7 +146,7 @@
 
     RootContentController *rootContentController = [UIApplication sharedRootContentController];
 
-    fileListItem.enabled = nil != [rootContentController.trackControllers objectForKey:fileListItem.path];
+    fileListItem.enabled = nil != [rootContentController.trackControllers objectForKey:fileListItem.filePath];
     [fileListTableViewCell.enabledSwitch setOn:fileListItem.enabled animated:NO];
     fileListTableViewCell.enabledSwitch.hidden = self.isEditing ? YES : NO;
 
@@ -207,7 +205,7 @@
     } else {
 
         NSString *blurb = nil;
-        if (![IGVHelpful isUsablePath:fileListItem.path
+        if (![IGVHelpful isUsablePath:fileListItem.filePath
                                 blurb:&blurb]) {
 
             fileListTableViewCell.enabledSwitch.on = NO;

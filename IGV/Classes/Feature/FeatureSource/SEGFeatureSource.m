@@ -64,17 +64,17 @@
     self.data = nil;
     self.sampleNames = nil;
     self.codec = nil;
-    self.path = nil;
+
     [super dealloc];
 }
 
-- (id)initWithPath:(NSString *)path {
+- (id)initWithFilePath:(NSString *)filePath{
 
     self = [super init];
 
     if (nil != self) {
 
-        self.path = path;
+        self.filePath = filePath;
         self.codec = [[[SEGCodec alloc] init] autorelease];
         self.reverseSortOrder = YES;
     }
@@ -143,7 +143,7 @@
     if (nil == self.data) {
 
         // Need to get data, then try again
-        [URLDataLoader loadDataWithPath:self.path completion:^(HttpResponse *httpResponse) {
+        [URLDataLoader loadDataWithPath:self.filePath completion:^(HttpResponse *httpResponse) {
 
             // TODO -- check for error in httpResponse.
             if ([httpResponse statusCode] > 400) {
@@ -153,7 +153,7 @@
 
             // cache data
             self.data = httpResponse.receivedData;
-            if ([[self.path pathExtension] isEqualToString:@"gz"]) {
+            if ([[self.filePath pathExtension] isEqualToString:@"gz"]) {
                 self.data = [httpResponse.receivedData gunzippedData];
             }
             [self loadFeaturesForInterval:featureInterval completion:completion];
@@ -245,10 +245,5 @@
 
     return [self.samples objectForKey:featureInterval.chromosomeName];
 }
-
-+ (SEGFeatureSource *)featureSourceForPath:(NSString *)path {
-    return [[[SEGFeatureSource alloc] initWithPath:path] autorelease];
-}
-
 
 @end

@@ -36,37 +36,55 @@
 #import "FileListItem.h"
 
 @implementation FileListItem
-
-@synthesize path = _path;
+@synthesize filePath = _filePath;
+@synthesize indexPath = _indexPath;
 @synthesize label = _label;
 @synthesize enabled = _enabled;
 @synthesize genome = _genome;
 
 - (void) dealloc {
 
-    self.path = nil;
+    self.filePath = nil;
+    self.indexPath = nil;
     self.label = nil;
     self.genome = nil;
 
     [super dealloc];
 }
 
-- (id)initWithPath:(NSString *)path label:(NSString *)label genome:(NSString *)genome {
+- (id)initWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem {
+
+    NSString *genome    = [FileListItem genomeWithFileListDefaultsItem:   fileListDefaultsItem];
+    NSString *filePath  = [FileListItem filePathWithFileListDefaultsItem: fileListDefaultsItem];
+    NSString *indexPath = [FileListItem indexPathWithFileListDefaultsItem:fileListDefaultsItem];
+    NSString *label     = [FileListItem labelWithFileListDefaultsItem:    fileListDefaultsItem];
+
+    self = [self initWithFilePath:filePath label:label genome:genome indexPath:indexPath];
+
+    return self;
+
+}
+
+- (id)initWithFilePath:(NSString *)filePath
+                 label:(NSString *)label
+                genome:(NSString *)genome
+             indexPath:(NSString *)indexPath {
 
     self = [super init];
 
     if (nil != self) {
 
         self.enabled = NO;
-        self.path = path;
-        self.label = ([label isEqualToString:@""] || nil == label) ? [FileListItem defaultLabelWithPath:path] : label;
+        self.filePath = filePath;
+        self.label = ([label isEqualToString:@""] || nil == label) ? [FileListItem defaultLabelWithFilePath:filePath] : label;
         self.genome = genome;
+        self.indexPath = indexPath;
     }
 
     return self;
 }
 
-+ (NSString *)defaultLabelWithPath:(NSString *)path {
++ (NSString *)defaultLabelWithFilePath:(NSString *)filePath {
 
 //    NSArray *parts = [path componentsSeparatedByString:@"/"];
 //    NSString *filename = [parts objectAtIndex:([parts count] - 1)];
@@ -84,7 +102,9 @@
 }
 
 - (NSString *)userDefaultsKey {
-    return [NSString stringWithFormat:@"%@#%@", self.genome, self.path];
+
+    NSString *string = (self.indexPath) ? [NSString stringWithFormat:@"%@#%@#%@", self.genome, self.filePath, self.indexPath] : [NSString stringWithFormat:@"%@#%@", self.genome, self.filePath];
+    return string;
 }
 
 + (NSString *)labelWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem {
@@ -93,7 +113,11 @@
     return [fileListDefaultsItem objectForKey:key];
 }
 
-+ (NSString *)urlStringWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem {
++ (NSString *)indexPathWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem {
+    return [self stringWithFileListDefaultsItem:fileListDefaultsItem index:2];
+}
+
++ (NSString *)filePathWithFileListDefaultsItem:(NSDictionary *)fileListDefaultsItem {
     return [self stringWithFileListDefaultsItem:fileListDefaultsItem index:1];
 }
 
@@ -106,7 +130,7 @@
     NSString *key = [[fileListDefaultsItem allKeys] objectAtIndex:0];
     NSArray *parts = [key componentsSeparatedByString:@"#"];
 
-    return [parts objectAtIndex:index];
+    return (index < [parts count]) ? [parts objectAtIndex:index] : nil;
 }
 
 #pragma mark - Table view delegate methods
@@ -117,7 +141,7 @@
 
 - (NSString *)tableViewCellURL {
 
-    NSArray *parts = [self.path componentsSeparatedByString:@"://"];
+    NSArray *parts = [self.filePath componentsSeparatedByString:@"://"];
     NSString *str = [parts objectAtIndex:([parts count] - 1)];
 
     return str;
