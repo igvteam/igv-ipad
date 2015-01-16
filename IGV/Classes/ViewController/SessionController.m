@@ -208,7 +208,7 @@
         [[UIApplication sharedIGVAppDelegate].commandDictionary setObject:resources forKey:kCommandResourceKey];
     }
 
-    [rootContentController.trackControllers removeAllTracks];
+    [rootContentController.trackControllers removeAllTracksExcludeGeneTrack:NO];
 
     // This allows the popover to retract immediately. Ish.
     dispatch_async(dispatch_get_main_queue(), ^{

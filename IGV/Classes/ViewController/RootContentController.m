@@ -866,7 +866,7 @@ NSTimeInterval const kScreenShotRevealDuration = 1.0/8.0;
 
 - (void)genomeSelectionDidChangeWithNotification:(NSNotification *)notification {
 
-    [self.trackControllers removeAllTracks];
+    [self.trackControllers removeAllTracksExcludeGeneTrack:NO];
 
     UINavigationController *navigationController = (UINavigationController *)self.trackListPopoverController.contentViewController;
     [navigationController popToRootViewControllerAnimated:NO];
@@ -953,7 +953,6 @@ NSTimeInterval const kScreenShotRevealDuration = 1.0/8.0;
 
         LMResource *resource = [LMResource resourceWithName:kGeneTrackName filePath:[genomeStub objectForKey:kGeneFileKey] indexPath:nil];
 
-
         BaseFeatureSource *featureSource = [BaseFeatureSource featureSourceWithResource:resource];
         TrackController *geneTrackController = nil;
         if (nil != featureSource) {
@@ -972,7 +971,7 @@ NSTimeInterval const kScreenShotRevealDuration = 1.0/8.0;
 
         if (nil != geneTrackController) {
             self.trackContainerScrollView.geneTrack = geneTrackController.track;
-            [self.trackControllers setObject:geneTrackController forKey:resource.filePath];
+            [self.trackControllers setObject:geneTrackController forKey:[genomeStub objectForKey:kGeneFileKey]];
         }
     }
 

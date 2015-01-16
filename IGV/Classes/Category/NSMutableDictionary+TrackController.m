@@ -41,6 +41,7 @@
 #import "LMResource.h"
 #import "CytobandTrackView.h"
 #import "RulerView.h"
+#import "GenomeManager.h"
 
 @implementation NSMutableDictionary (TrackController)
 
@@ -83,19 +84,31 @@
     return [NSArray arrayWithArray:[keys allObjects]];
 }
 
-- (void)removeAllTracks {
+- (void)removeAllTracksExcludeGeneTrack:(BOOL)excludeGeneTrack {
 
     RootContentController *rootContentController = [UIApplication sharedRootContentController];
-    rootContentController.trackContainerScrollView.geneTrack = nil;
 
     NSMutableSet *keys = [NSMutableSet setWithArray:[self allKeys]];
-    [keys minusSet:[NSSet setWithObject:NSStringFromClass([RefSeqTrackController class])]];
-    for (NSString *key in keys) {
 
-        TrackController *trackController = [self objectForKey:key];
-        trackController.track.resource.enabled = NO;
-        [rootContentController.trackContainerScrollView discardTrack:trackController.track];
-        [self removeObjectForKey:key];
+    if (!excludeGeneTrack) {
+        rootContentController.trackContainerScrollView.geneTrack = nil;
+    } else {
+        [keys minusSet:[NSSet setWithObject:[[[GenomeManager sharedGenomeManager] currentGenomeStub] objectForKey:kGeneFileKey]]];
+
+    }
+
+    [keys minusSet:[NSSet setWithObject:NSStringFromClass([RefSeqTrackController class])]];
+
+    if ([keys count] > 0) {
+
+        for (NSString *key in keys) {
+
+            TrackController *trackController = [self objectForKey:key];
+            trackController.track.resource.enabled = NO;
+            [rootContentController.trackContainerScrollView discardTrack:trackController.track];
+            [self removeObjectForKey:key];
+        }
+
     }
 }
 

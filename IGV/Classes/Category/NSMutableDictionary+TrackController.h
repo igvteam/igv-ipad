@@ -38,6 +38,7 @@
 @interface NSMutableDictionary (TrackController)
 - (void)renderTrack:(TrackView *)track;
 - (void)renderAllTracks;
-- (void)removeAllTracks;
+
+- (void)removeAllTracksExcludeGeneTrack:(BOOL)excludeGeneTrack;
 - (NSArray *)allNonRefSeqKeys;
 @end

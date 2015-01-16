@@ -58,6 +58,7 @@
 #import "LMSession.h"
 #import "PListPersistence.h"
 #import "AlignmentTrackView.h"
+#import "TrackContainerScrollView.h"
 
 static const long long int kLocusHalfWidth = 40;
 //static const long long int kLocusHalfWidth = 24;
@@ -317,7 +318,7 @@ static const long long int kLocusHalfWidth = 40;
 
             if (genome && ![genome isEqualToString:[GenomeManager sharedGenomeManager].currentGenomeName]) {
 
-                [rootContentController.trackControllers removeAllTracks];
+                [rootContentController.trackControllers removeAllTracksExcludeGeneTrack:NO];
 
                 [GenomeManager sharedGenomeManager].currentGenomeName = genome;
                 [rootContentController selectGenomeWithGenomeManager:[GenomeManager sharedGenomeManager]
@@ -352,7 +353,16 @@ static const long long int kLocusHalfWidth = 40;
         // kCommandResourceKey
         if ([command isEqualToString:kCommandResourceKey]) {
 
-            [rootContentController.trackControllers removeAllTracks];
+            id key = [[[GenomeManager sharedGenomeManager] currentGenomeStub] objectForKey:kGeneFileKey];
+            if ([rootContentController.trackControllers objectForKey:key]) {
+
+//                TrackController *trackController = [rootContentController.trackControllers objectForKey:key];
+//                if (rootContentController.trackContainerScrollView.geneTrack == trackController.track) {
+
+                    [rootContentController.trackControllers removeAllTracksExcludeGeneTrack:YES];
+//                }
+
+            }
 
             NSArray *resources = [NSArray arrayWithArray:[self.commandDictionary objectForKey:kCommandResourceKey]];
             [self.commandDictionary removeObjectForKey:kCommandResourceKey];
